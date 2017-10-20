@@ -64,13 +64,23 @@ public class LineFollow {
 		    System.out.println(samplevalue[0]);
 		    
 	    		if (samplevalue[0] == whiteColorID){ //normal color of floor
+	    			
 	   			pilot.rotate(-15); 
 	   			getColor.fetchSample(samplevalue, 0);
 	    		}
 	    		
 	   		else if (samplevalue[0] == blackColorID){ //detects the black line
+	   			
 	   			pilot.rotate(15);
+	   			getColor.fetchSample(samplevalue, 0);
 	    		}
+	    		
+	   		else if (samplevalue[0]<whiteColorID && samplevalue[0]>blackColorID) {
+	   			
+	   			pilot.forward();
+	   			getColor.fetchSample(samplevalue, 0);
+	   			
+	   		}
 		}
 	}
 }
