@@ -41,7 +41,7 @@ public class LineFollow {
 		 * Do same thing for the light colored floor, except value is 100
 		 */
 		
-		//the code commented below is intended to deal with calibration of the robot. It still needs to be completed, but this is my first crack at it
+		//the code commented below is intended to deal with calibration of the robot. It still needs to be completed, but this is my first crack at it -gus
 		/*
 		System.out.println("Place the robot on the line and then press the x button");
 		
