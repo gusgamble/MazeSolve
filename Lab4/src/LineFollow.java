@@ -16,12 +16,12 @@ import lejos.robotics.chassis.WheeledChassis;
 
 public class LineFollow {
 	
-	static EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S2);
-	//static EV3TouchSensor TOUCH_SENSOR = new EV3TouchSensor(SensorPort.S4);
-	//static EV3IRSensor IR_SENSOR = new EV3IRSensor(SensorPort.S1);
+	static EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S4);
+	//static EV3TouchSensor TOUCH_SENSOR = new EV3TouchSensor(SensorPort.S2);
+	//static EV3IRSensor IR_SENSOR = new EV3IRSensor(SensorPort.S3);
 	
-	static EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.A);
-	static EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.D);
+	static EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.D);
+	static EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.A);
 	
 	static Wheel wheel1 = WheeledChassis.modelWheel(leftMotor , 3.0).offset(-5.5);
 	static Wheel wheel2 = WheeledChassis.modelWheel(rightMotor , 3.0).offset(5.5);
