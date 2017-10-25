@@ -2,6 +2,8 @@
  *  Uses color sensor
  */
 import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.hardware.sensor.EV3IRSensor;
+import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.hardware.sensor.SensorMode;
 import lejos.hardware.Button;
 import lejos.hardware.port.SensorPort;
@@ -15,9 +17,11 @@ import lejos.robotics.chassis.WheeledChassis;
 public class LineFollow {
 	
 	static EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S2);
+	//static EV3TouchSensor TOUCH_SENSOR = new EV3TouchSensor(SensorPort.S4);
+	//static EV3IRSensor IR_SENSOR = new EV3IRSensor(SensorPort.S1);
 	
-	static EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.C);
-	static EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.A);
+	static EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.A);
+	static EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.D);
 	
 	static Wheel wheel1 = WheeledChassis.modelWheel(leftMotor , 3.0).offset(-5.5);
 	static Wheel wheel2 = WheeledChassis.modelWheel(rightMotor , 3.0).offset(5.5);
