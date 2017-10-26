@@ -35,6 +35,7 @@ public class MazeDraft {
 		
 		Button.waitForAnyPress();
 		
+		//this is where we implement the methods that instigate the actions (also in the methods below)
 		
 	}
 	
