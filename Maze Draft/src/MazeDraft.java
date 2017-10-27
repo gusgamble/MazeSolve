@@ -29,7 +29,7 @@ public class MazeDraft {
 	static double FLOOR_COLOR_ID = 13.0;
 	static double BLUE_FOIL = 2.0; 
 	static double TURN_ANGLE = 2;
-	static double DISTANCE_FROM_WALL = 10; //this number needs to be measured/changed
+	static double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
 	
 	public static void main(String[] args) {
 		
@@ -61,7 +61,11 @@ public class MazeDraft {
 	public static boolean isOffLine(SensorMode sensor) {
 		float [] samplevalue =  new float [sensor.sampleSize()];
 		sensor.fetchSample(samplevalue, 0) ;
-		return(samplevalue[0] == FLOOR_COLOR_ID);
+		return(samplevalue[0] == FLOOR_COLOR_ID || samplevalue[0] == BLACK_COLOR_ID);
+	}
+	
+	public static void followLine(MovePilot pilot) {
+		
 	}
 	
 	public static void turnRight(MovePilot pilot){
