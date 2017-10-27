@@ -35,8 +35,14 @@ public class MazeDraft {
 	public static void main(String[] args) {
 		
 		Button.waitForAnyPress();
+		while(Button.getButtons() != Button.ID_ESCAPE){
+			//this is where we implement the methods that instigate the actions (also in the methods below)
+			
+		}
 		
-		//this is where we implement the methods that instigate the actions (also in the methods below)
+		
+		
+		
 		
 		SensorMode getRed = COLOR_SENSOR.getRedMode();
 		
