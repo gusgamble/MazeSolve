@@ -61,7 +61,7 @@ public class MazeDraft {
 	public static boolean isOffLine(SensorMode sensor) {
 		float [] samplevalue =  new float [sensor.sampleSize()];
 		sensor.fetchSample(samplevalue, 0) ;
-		return(samplevalue[0]== FLOOR_COLOR_ID);
+		return(samplevalue[0] == FLOOR_COLOR_ID);
 	}
 	
 	public static void turnRight(MovePilot pilot){
