@@ -21,8 +21,8 @@ public class MazeDraft {
 	static EV3LargeRegulatedMotor LEFT_MOTOR = new EV3LargeRegulatedMotor(MotorPort.D);
 	static EV3LargeRegulatedMotor RIGHT_MOTOR = new EV3LargeRegulatedMotor(MotorPort.A);
 	
-	static Wheel WHEEL1 = WheeledChassis.modelWheel(LEFT_MOTOR , 3.0).offset(-5.5);
-	static Wheel WHEEL2 = WheeledChassis.modelWheel(RIGHT_MOTOR , 3.0).offset(5.5);
+	static Wheel WHEEL1 = WheeledChassis.modelWheel(LEFT_MOTOR , 2.0).offset(-5.5);
+	static Wheel WHEEL2 = WheeledChassis.modelWheel(RIGHT_MOTOR , 2.0).offset(5.5);
 	static Chassis chassis = new WheeledChassis(new  Wheel[] { WHEEL1, WHEEL2 }, WheeledChassis.TYPE_DIFFERENTIAL);
 	static MovePilot PILOT = new MovePilot(chassis);
 	static double BLACK_COLOR_ID = 7.0;
