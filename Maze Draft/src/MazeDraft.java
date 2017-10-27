@@ -25,9 +25,10 @@ public class MazeDraft {
 	static Wheel WHEEL2 = WheeledChassis.modelWheel(RIGHT_MOTOR , 2.0).offset(5.5);
 	static Chassis chassis = new WheeledChassis(new  Wheel[] { WHEEL1, WHEEL2 }, WheeledChassis.TYPE_DIFFERENTIAL);
 	static MovePilot PILOT = new MovePilot(chassis);
-	static double BLACK_COLOR_ID = 7.0;
-	static double FLOOR_COLOR_ID = 13.0;
-	static double BLUE_FOIL = 2.0; 
+	static double BLACK_COLOR_ID = 0.04;
+	static double FLOOR_COLOR_ID = 0.36;//.37-.35
+	static double BLUE = 2.0; 
+	static double FOIl = 0.86;
 	static double TURN_ANGLE = 2;
 	static double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
 	
