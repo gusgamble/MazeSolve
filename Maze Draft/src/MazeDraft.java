@@ -44,6 +44,9 @@ public class MazeDraft {
 		
 		
 		
+		
+		
+		
 	}
 	
 	public static boolean checkIR(SensorMode sensor){
