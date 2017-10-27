@@ -27,7 +27,7 @@ public class MazeDraft {
 	static MovePilot PILOT = new MovePilot(chassis);
 	static double BLACK_COLOR_ID = 0.04;
 	static double FLOOR_COLOR_ID = 0.36;//.37-.35
-	static double BLUE = 2.0; 
+	static double BLUE = 0.02; 
 	static double FOIl = 0.86;
 	static double TURN_ANGLE = 2;
 	static double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
@@ -38,7 +38,23 @@ public class MazeDraft {
 		
 		//this is where we implement the methods that instigate the actions (also in the methods below)
 		
+		SensorMode getRed = COLOR_SENSOR.getRedMode();
 		
+		PILOT.forward();
+		
+		while(Button.getButtons() != Button.ID_ESCAPE){ 
+			float [] samplevalue =  new float [getRed.sampleSize()];
+			getRed.fetchSample(samplevalue, 0) ;
+			
+			if(samplevalue[0] == FLOOR_COLOR_ID) {
+				PILOT.rotate(TURN_ANGLE);
+			}
+			else if(samplevalue[0] == BLACK_COLOR_ID) {
+				PILOT.rotate(-TURN_ANGLE);
+			}
+			else
+				PILOT.forward();
+		}
 		
 		
 	}
