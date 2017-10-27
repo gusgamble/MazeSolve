@@ -38,6 +38,9 @@ public class MazeDraft {
 		
 		//this is where we implement the methods that instigate the actions (also in the methods below)
 		
+		
+		
+		
 	}
 	
 	public static boolean checkIR(SensorMode sensor){
@@ -52,12 +55,14 @@ public class MazeDraft {
 		return (samplevalue[0]==1);
 	}
 	
+	/*
 	public static boolean checkColor(SensorMode sensor){
 		//To tell the difference between foil and blue, checkColor() uses getRedMode() to give different readings
 		//returns true if the color is blue, false if it is the foil
 		boolean isBlue=false;
 		return isBlue;
 	}
+	*/
 	
 	public static boolean isOffLine(SensorMode sensor) {
 		float [] samplevalue =  new float [sensor.sampleSize()];
@@ -65,8 +70,18 @@ public class MazeDraft {
 		return(samplevalue[0] == FLOOR_COLOR_ID || samplevalue[0] == BLACK_COLOR_ID);
 	}
 	
-	public static void followLine(MovePilot pilot) {
-		
+	public static void followLine(MovePilot pilot, SensorMode sensor) {
+		while(isOffLine(sensor)){
+			float [] samplevalue =  new float [sensor.sampleSize()];
+			sensor.fetchSample(samplevalue, 0) ;
+			
+			if(samplevalue[0] == FLOOR_COLOR_ID) {
+				pilot.rotate(TURN_ANGLE);
+			}
+			else if(samplevalue[0] == BLACK_COLOR_ID) {
+				pilot.rotate(-TURN_ANGLE);
+			}
+		}
 	}
 	
 	public static void turnRight(MovePilot pilot){
