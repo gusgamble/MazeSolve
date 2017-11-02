@@ -44,12 +44,16 @@ public class MazeDraft {
 		
 		
 		
-		SensorMode getRed = COLOR_SENSOR.getRedMode();
+		//SensorMode getRed = COLOR_SENSOR.getRedMode();
+		
+		SensorMode getTouch = TOUCH_SENSOR.getTouchMode();
+		
+		SensorMode getIR = IR_SENSOR.getDistanceMode();
 		
 		PILOT.forward();
 		
 		while(Button.getButtons() != Button.ID_ESCAPE){ 
-			float [] samplevalue =  new float [getRed.sampleSize()];
+			/*float [] samplevalue =  new float [getRed.sampleSize()];
 			getRed.fetchSample(samplevalue, 0) ;
 			
 			if(samplevalue[0] == FLOOR_COLOR_ID) {
@@ -60,6 +64,21 @@ public class MazeDraft {
 			}
 			else
 				PILOT.forward();
+				*/
+			
+			if(checkIR(getIR)) {
+				
+				PILOT.travel(10);
+				turnLeft(PILOT);
+				PILOT.forward();
+				
+			}
+			else if(checkIfTouching(getTouch)) {
+				backUp(PILOT);
+				turnRight(PILOT);
+				PILOT.forward();
+			}
+			
 		}
 		
 		
@@ -68,7 +87,7 @@ public class MazeDraft {
 	public static boolean checkIR(SensorMode sensor){
 		float [] samplevalue =  new float [sensor.sampleSize()];
 		sensor.fetchSample(samplevalue,0);
-		return (samplevalue[0]<=DISTANCE_FROM_WALL);//
+		return (samplevalue[0]>=DISTANCE_FROM_WALL);//
 	}
 	
 	public static boolean checkIfTouching(SensorMode sensor){
