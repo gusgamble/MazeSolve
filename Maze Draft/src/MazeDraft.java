@@ -31,10 +31,15 @@ public class MazeDraft {
 	static double FOIl = 0.86;
 	static double TURN_ANGLE = 2;
 	static double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
+	static double SPEED = 6;
+	
 	
 	public static void main(String[] args) {
 		
+		PILOT.setLinearSpeed(SPEED);
+		
 		Button.waitForAnyPress();
+		
 		while(Button.getButtons() != Button.ID_ESCAPE){
 			//this is where we implement the methods that instigate the actions (also in the methods below)
 			
@@ -53,6 +58,7 @@ public class MazeDraft {
 		PILOT.forward();
 		
 		while(Button.getButtons() != Button.ID_ESCAPE){ 
+			
 			/*float [] samplevalue =  new float [getRed.sampleSize()];
 			getRed.fetchSample(samplevalue, 0) ;
 			
@@ -70,6 +76,7 @@ public class MazeDraft {
 				
 				PILOT.travel(10);
 				turnLeft(PILOT);
+				PILOT.travel(5);
 				PILOT.forward();
 				
 			}
