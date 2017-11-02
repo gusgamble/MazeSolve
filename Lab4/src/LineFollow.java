@@ -16,27 +16,45 @@ import lejos.robotics.chassis.WheeledChassis;
 
 public class LineFollow {
 	
-	static EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S4);
-	//static EV3TouchSensor TOUCH_SENSOR = new EV3TouchSensor(SensorPort.S2);
-	//static EV3IRSensor IR_SENSOR = new EV3IRSensor(SensorPort.S3);
+	static EV3ColorSensor COLOR_SENSOR = new EV3ColorSensor(SensorPort.S4);
+	static EV3TouchSensor TOUCH_SENSOR = new EV3TouchSensor(SensorPort.S2);
+	static EV3IRSensor IR_SENSOR = new EV3IRSensor(SensorPort.S3);
 	
-	static EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.D);
-	static EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.A);
+	static EV3LargeRegulatedMotor LEFT_MOTOR = new EV3LargeRegulatedMotor(MotorPort.D);
+	static EV3LargeRegulatedMotor RIGHT_MOTOR = new EV3LargeRegulatedMotor(MotorPort.A);
 	
-	static Wheel wheel1 = WheeledChassis.modelWheel(leftMotor , 3.0).offset(-5.5);
-	static Wheel wheel2 = WheeledChassis.modelWheel(rightMotor , 3.0).offset(5.5);
-	static Chassis chassis = new WheeledChassis(new  Wheel[] { wheel1, wheel2 }, WheeledChassis.TYPE_DIFFERENTIAL);
-	static MovePilot pilot = new MovePilot(chassis);
-	static double blackColorID = 0.04; //Hardcoded for now. Will change once calibration is debugged.
-	static double whiteColorID = 0.18; //Hardcoded for now. Will change once calibration is debugged.
-	static double turnAngle = 2;
+	static Wheel WHEEL1 = WheeledChassis.modelWheel(LEFT_MOTOR , 2.0).offset(-5.5);
+	static Wheel WHEEL2 = WheeledChassis.modelWheel(RIGHT_MOTOR , 2.0).offset(5.5);
+	static Chassis chassis = new WheeledChassis(new  Wheel[] { WHEEL1, WHEEL2 }, WheeledChassis.TYPE_DIFFERENTIAL);
+	static MovePilot PILOT = new MovePilot(chassis);
+	//static double BLACK_COLOR_ID = 0.04;
+	//static double FLOOR_COLOR_ID = 0.36;//.37-.35
+	//static double BLUE = 0.02; 
+	//static double FOIl = 0.86;
+	static double TURN_ANGLE = 1;
+	static double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
+	static double SPEED = 6;
+	
+	//static char[] DIRECTIONS = new char[]{'l','s','r'};
+	
 	
 	public static void main(String[] args) {
+		
 		Button.waitForAnyPress();
 		
+		SensorMode getColor1 = COLOR_SENSOR.getRedMode();
+		float [] samplevalue1 =  new float [getColor1.sampleSize()];
+		getColor1.fetchSample(samplevalue1, 0);
+		double boundary = samplevalue1[0];	
+		
+		Button.waitForAnyPress();
+		
+		PILOT.setLinearSpeed(SPEED);
+		PILOT.setAngularSpeed(PILOT.getMaxAngularSpeed());
+		
 		//mode that measures reflected light
-		SensorMode getColor = colorSensor.getRedMode();
-		float [] samplevalue =  new float [getColor.sampleSize()];
+		
+		
 		
 		/**CALIBRATION
 		 * Print out on screen instruction for user to place robot on black line
@@ -46,7 +64,7 @@ public class LineFollow {
 		 * Do same thing for the light colored floor, except value is 100
 		 */
 		
-		//the code commented below is intended to deal with calibration of the robot. It still needs to be completed, but this is my first crack at it -gus
+		//the code commented below is intended to deal with calibration of the robot. It still needs to be completed, but this is my first crack at it
 		/*
 		System.out.println("Place the robot on the line and then press the x button");
 		
@@ -62,34 +80,45 @@ public class LineFollow {
 			float floor = getColor.sampleSize();
 		}*/
 		
-		pilot.setLinearSpeed(6);
+		PILOT.forward();
 		
-		pilot.forward();
 		
-		while(Button.getButtons() != Button.ID_ESCAPE){                   
+		
+		while(Button.getButtons() != Button.ID_ESCAPE){  
+			
+			SensorMode getColor = COLOR_SENSOR.getRedMode();
+			float [] samplevalue =  new float [getColor.sampleSize()];
+			
 		    getColor.fetchSample(samplevalue, 0);
 		    System.out.println(samplevalue[0]);
 		    
-	    		if (samplevalue[0] == whiteColorID){ //normal color of floor
+	    		if (samplevalue[0] >(boundary-.02) && samplevalue[0] < (boundary+.02)){ //normal color of floor
+	   			
 	    			
-	   			pilot.rotate(-turnAngle); 
+	    			if(!PILOT.isMoving()) {
+	   				PILOT.forward();
+	   			}
+	   				
 	   			//getColor.fetchSample(samplevalue, 0);
-	   			pilot.forward();
 	    		}
 	    		
-	   		else if (samplevalue[0] == blackColorID){ //detects the black line
-	   			
-	   			pilot.rotate(turnAngle);
-	   			//getColor.fetchSample(samplevalue, 0);
-	   			pilot.forward();
+	   		else if (samplevalue[0] < (boundary-.02)){ //detects the black line
+	   			PILOT.arcForward(1);
+	   			if(!PILOT.isMoving()) {
+	   				PILOT.forward();
+	   			}
 	    		}
-	    		
-	   		//else if (samplevalue[0]<whiteColorID && samplevalue[0]>blackColorID) {
-	   			
-	   			//pilot.forward();
-	   			//getColor.fetchSample(samplevalue, 0);
-	   			
-	   		//}
+	   		else if (samplevalue[0] > (boundary+.02)){
+	   			PILOT.arcForward(1);
+	   			if(!PILOT.isMoving()) {
+	   				PILOT.forward();
+	   			}
+	   		}
+	   		else {
+	   			if(!PILOT.isMoving()) {
+	   				PILOT.forward();
+	   			}
+	   		}
 		}
 	}
 }

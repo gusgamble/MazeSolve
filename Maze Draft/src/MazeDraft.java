@@ -40,7 +40,7 @@ public class MazeDraft {
 		
 		PILOT.setLinearSpeed(SPEED);
 		
-		PILOT.
+		//PILOT.
 		
 		Button.waitForAnyPress();
 		
@@ -99,7 +99,7 @@ public class MazeDraft {
 			}
 			*/
 			else {
-				PILOT.forward();
+				//PILOT.forward();
 				System.out.println("ELSE");
 			}
 			
