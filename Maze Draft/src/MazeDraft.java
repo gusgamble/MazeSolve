@@ -78,12 +78,24 @@ public class MazeDraft {
 				turnLeft(PILOT);
 				PILOT.travel(5);
 				PILOT.forward();
+				System.out.println("IR");
 				
 			}
+			
 			else if(checkIfTouching(getTouch)) {
 				backUp(PILOT);
 				turnRight(PILOT);
 				PILOT.forward();
+				System.out.println("TOUCH");
+			}
+			/*
+			else if(!PILOT.isMoving()){
+				PILOT.forward();
+				System.out.println("NOT MOVING");
+			}
+			*/
+			else {
+				System.out.println("ELSE");
 			}
 			
 		}
