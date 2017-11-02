@@ -40,6 +40,8 @@ public class MazeDraft {
 		
 		PILOT.setLinearSpeed(SPEED);
 		
+		PILOT.
+		
 		Button.waitForAnyPress();
 		
 		while(Button.getButtons() != Button.ID_ESCAPE){
