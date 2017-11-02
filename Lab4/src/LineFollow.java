@@ -34,6 +34,7 @@ public class LineFollow {
 	static double TURN_ANGLE = 1;
 	static double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
 	static double SPEED = 6;
+	static double TOLERANCE = .04;
 	
 	//static char[] DIRECTIONS = new char[]{'l','s','r'};
 	
@@ -45,11 +46,13 @@ public class LineFollow {
 		SensorMode getColor1 = COLOR_SENSOR.getRedMode();
 		float [] samplevalue1 =  new float [getColor1.sampleSize()];
 		getColor1.fetchSample(samplevalue1, 0);
+		
 		double boundary = samplevalue1[0];	
 		
-		Button.waitForAnyPress();
+		//Button.waitForAnyPress();
 		
 		PILOT.setLinearSpeed(SPEED);
+		PILOT.setAngularAcceleration(PILOT.getAngularAcceleration());
 		PILOT.setAngularSpeed(PILOT.getMaxAngularSpeed());
 		
 		//mode that measures reflected light
@@ -82,8 +85,6 @@ public class LineFollow {
 		
 		PILOT.forward();
 		
-		
-		
 		while(Button.getButtons() != Button.ID_ESCAPE){  
 			
 			SensorMode getColor = COLOR_SENSOR.getRedMode();
@@ -92,32 +93,39 @@ public class LineFollow {
 		    getColor.fetchSample(samplevalue, 0);
 		    System.out.println(samplevalue[0]);
 		    
-	    		if (samplevalue[0] >(boundary-.02) && samplevalue[0] < (boundary+.02)){ //normal color of floor
-	   			
+	    		if ((samplevalue[0] > (boundary-TOLERANCE)) && (samplevalue[0] < (boundary+TOLERANCE))){ //normal color of floor
+	    			System.out.println(samplevalue[0]);
 	    			
-	    			if(!PILOT.isMoving()) {
-	   				PILOT.forward();
-	   			}
+	    			if(!PILOT.isMoving())
+	    				PILOT.forward();
+	   		
 	   				
 	   			//getColor.fetchSample(samplevalue, 0);
 	    		}
 	    		
-	   		else if (samplevalue[0] < (boundary-.02)){ //detects the black line
-	   			PILOT.arcForward(1);
-	   			if(!PILOT.isMoving()) {
-	   				PILOT.forward();
-	   			}
+	   		else if (samplevalue[0] < (boundary -TOLERANCE)){ 
+	   			
+	   			PILOT.arcForward(2);
+	   			//PILOT.forward();
+	   			System.out.println(samplevalue[0]);
+	   			
+	   			
+	   			
 	    		}
-	   		else if (samplevalue[0] > (boundary+.02)){
-	   			PILOT.arcForward(1);
-	   			if(!PILOT.isMoving()) {
-	   				PILOT.forward();
-	   			}
+	   		else if (samplevalue[0] > (boundary + TOLERANCE)){
+	   			PILOT.arcForward(-2);
+	   			
+	   			//PILOT.forward();
+	   			System.out.println(samplevalue[0]);
 	   		}
+	   		//else if(samplevalue[0] == BLUE)
+	    		
 	   		else {
-	   			if(!PILOT.isMoving()) {
+	   			System.out.println(samplevalue[0]);
+	   			
+	   			/*if(!PILOT.isMoving()) {
 	   				PILOT.forward();
-	   			}
+	   			}*/
 	   		}
 		}
 	}
