@@ -33,6 +33,8 @@ public class MazeDraft {
 	static double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
 	static double SPEED = 6;
 	
+	static char[] DIRECTIONS = new char[]{'l','s','r'};
+
 	
 	public static void main(String[] args) {
 		
