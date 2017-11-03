@@ -101,7 +101,7 @@ public class MazeDraft {
 			*/
 			else {
 				//PILOT.forward();
-				System.out.println("ELSE");
+				//System.out.println("ELSE");
 			}
 			
 		}
