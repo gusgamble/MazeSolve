@@ -54,7 +54,7 @@ public class MazeDraft {
 		
 		
 		
-		SensorMode getRed = color_sensor.getRedMode();
+		//SensorMode getRed = color_sensor.getRedMode();
 		
 		SensorMode getTouch = touch_sensor.getTouchMode();
 		
@@ -77,7 +77,7 @@ public class MazeDraft {
 				PILOT.forward();
 				*/
 			
-			followLine(pilot, getRed);
+			//followLine(pilot, getRed);
 			
 			if(checkIR(getIR)) {
 				
