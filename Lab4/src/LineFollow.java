@@ -16,34 +16,34 @@ import lejos.robotics.chassis.WheeledChassis;
 
 public class LineFollow {
 	
-	static EV3ColorSensor COLOR_SENSOR = new EV3ColorSensor(SensorPort.S4);
-	static EV3TouchSensor TOUCH_SENSOR = new EV3TouchSensor(SensorPort.S2);
-	static EV3IRSensor IR_SENSOR = new EV3IRSensor(SensorPort.S3);
+	static EV3ColorSensor color_sensor = new EV3ColorSensor(SensorPort.S4);
+	static EV3TouchSensor touch_sensor = new EV3TouchSensor(SensorPort.S2);
+	static EV3IRSensor ir_sensor = new EV3IRSensor(SensorPort.S3);
 	
-	static EV3LargeRegulatedMotor LEFT_MOTOR = new EV3LargeRegulatedMotor(MotorPort.D);
-	static EV3LargeRegulatedMotor RIGHT_MOTOR = new EV3LargeRegulatedMotor(MotorPort.A);
+	static EV3LargeRegulatedMotor left_motor = new EV3LargeRegulatedMotor(MotorPort.D);
+	static EV3LargeRegulatedMotor right_motor = new EV3LargeRegulatedMotor(MotorPort.A);
 	
-	static Wheel WHEEL1 = WheeledChassis.modelWheel(LEFT_MOTOR , 2.0).offset(-5.5);
-	static Wheel WHEEL2 = WheeledChassis.modelWheel(RIGHT_MOTOR , 2.0).offset(5.5);
-	static Chassis chassis = new WheeledChassis(new  Wheel[] { WHEEL1, WHEEL2 }, WheeledChassis.TYPE_DIFFERENTIAL);
-	static MovePilot PILOT = new MovePilot(chassis);
-	//static double BLACK_COLOR_ID = 0.04;
-	//static double FLOOR_COLOR_ID = 0.36;//.37-.35
-	//static double BLUE = 0.02; 
-	//static double FOIl = 0.86;
-	static double TURN_ANGLE = 1;
-	static double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
-	static double SPEED = 6;
-	static double TOLERANCE = .04;
+	static Wheel wheel1 = WheeledChassis.modelWheel(left_motor , 2.0).offset(-5.5);
+	static Wheel wheel2 = WheeledChassis.modelWheel(right_motor , 2.0).offset(5.5);
+	static Chassis chassis = new WheeledChassis(new  Wheel[] { wheel1, wheel2 }, WheeledChassis.TYPE_DIFFERENTIAL);
+	static MovePilot pilot = new MovePilot(chassis);
+	//static final double BLACK_COLOR_ID = 0.04;
+	//static final double FLOOR_COLOR_ID = 0.36;//.37-.35
+	//static final double BLUE = 0.02; 
+	//static final double FOIl = 0.86;
+	static final double TURN_ANGLE = 1;
+	static final double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
+	static final double SPEED = 6;
+	static final double TOLERANCE = .04;
 	
-	//static char[] DIRECTIONS = new char[]{'l','s','r'};
+	//static final char[] DIRECTIONS = new char[]{'l','s','r'};
 	
 	
 	public static void main(String[] args) {
 		
 		Button.waitForAnyPress();
 		
-		SensorMode getColor1 = COLOR_SENSOR.getRedMode();
+		SensorMode getColor1 = color_sensor.getRedMode();
 		float [] samplevalue1 =  new float [getColor1.sampleSize()];
 		getColor1.fetchSample(samplevalue1, 0);
 		
@@ -51,9 +51,9 @@ public class LineFollow {
 		
 		//Button.waitForAnyPress();
 		
-		PILOT.setLinearSpeed(SPEED);
-		PILOT.setAngularAcceleration(PILOT.getAngularAcceleration());
-		PILOT.setAngularSpeed(PILOT.getMaxAngularSpeed());
+		pilot.setLinearSpeed(SPEED);
+		pilot.setAngularAcceleration(pilot.getAngularAcceleration());
+		pilot.setAngularSpeed(pilot.getMaxAngularSpeed());
 		
 		//mode that measures reflected light
 		
@@ -83,21 +83,21 @@ public class LineFollow {
 			float floor = getColor.sampleSize();
 		}*/
 		
-		PILOT.forward();
+		pilot.forward();
 		
 		while(Button.getButtons() != Button.ID_ESCAPE){  
 			
-			SensorMode getColor = COLOR_SENSOR.getRedMode();
+			SensorMode getColor = color_sensor.getRedMode();
 			float [] samplevalue =  new float [getColor.sampleSize()];
 			
 		    getColor.fetchSample(samplevalue, 0);
 		    System.out.println(samplevalue[0]);
 		    
-	    		if ((samplevalue[0] > (boundary-TOLERANCE)) && (samplevalue[0] < (boundary+TOLERANCE))){ //normal color of floor
+	    		if ((samplevalue[0] >= (boundary-TOLERANCE)) && (samplevalue[0] <= (boundary+TOLERANCE))){ //normal color of floor
 	    			System.out.println(samplevalue[0]);
 	    			
-	    			if(!PILOT.isMoving())
-	    				PILOT.forward();
+	    			if(!pilot.isMoving())
+	    				pilot.forward();
 	   		
 	   				
 	   			//getColor.fetchSample(samplevalue, 0);
@@ -106,7 +106,7 @@ public class LineFollow {
 	   		else if (samplevalue[0] < (boundary -TOLERANCE)){ 
 	   		
 	   			
-	   			PILOT.arcForward(1);
+	   			pilot.arcForward(1);
 	   			//PILOT.forward();
 	   			System.out.println(samplevalue[0]);
 	   			
@@ -114,7 +114,7 @@ public class LineFollow {
 	   			
 	    		}
 	   		else if (samplevalue[0] > (boundary + TOLERANCE)){
-	   			PILOT.arcForward(-1);
+	   			pilot.arcForward(-1);
 	   			
 	   			//PILOT.forward();
 	   			System.out.println(samplevalue[0]);

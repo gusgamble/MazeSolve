@@ -14,33 +14,34 @@ import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
 
 public class MazeDraft {
-	static EV3ColorSensor COLOR_SENSOR = new EV3ColorSensor(SensorPort.S4);
-	static EV3TouchSensor TOUCH_SENSOR = new EV3TouchSensor(SensorPort.S2);
-	static EV3IRSensor IR_SENSOR = new EV3IRSensor(SensorPort.S3);
 	
-	static EV3LargeRegulatedMotor LEFT_MOTOR = new EV3LargeRegulatedMotor(MotorPort.D);
-	static EV3LargeRegulatedMotor RIGHT_MOTOR = new EV3LargeRegulatedMotor(MotorPort.A);
+	static EV3ColorSensor color_sensor = new EV3ColorSensor(SensorPort.S4);
+	static EV3TouchSensor touch_sensor = new EV3TouchSensor(SensorPort.S2);
+	static EV3IRSensor ir_sensor = new EV3IRSensor(SensorPort.S3);
 	
-	static Wheel WHEEL1 = WheeledChassis.modelWheel(LEFT_MOTOR , 2.0).offset(-5.5);
-	static Wheel WHEEL2 = WheeledChassis.modelWheel(RIGHT_MOTOR , 2.0).offset(5.5);
-	static Chassis chassis = new WheeledChassis(new  Wheel[] { WHEEL1, WHEEL2 }, WheeledChassis.TYPE_DIFFERENTIAL);
-	static MovePilot PILOT = new MovePilot(chassis);
-	static double BLACK_COLOR_ID = 0.04;
-	static double FLOOR_COLOR_ID = 0.36;//.37-.35
-	static double BLUE = 0.02; 
-	static double FOIl = 0.86;
-	static double TURN_ANGLE = 2;
-	static double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
-	static double SPEED = 6;
+	static EV3LargeRegulatedMotor left_motor = new EV3LargeRegulatedMotor(MotorPort.D);
+	static EV3LargeRegulatedMotor right_motor = new EV3LargeRegulatedMotor(MotorPort.A);
 	
-	static char[] DIRECTIONS = new char[]{'l','s','r'};
+	static Wheel wheel1 = WheeledChassis.modelWheel(left_motor , 2.0).offset(-5.5);
+	static Wheel wheel2 = WheeledChassis.modelWheel(right_motor , 2.0).offset(5.5);
+	static Chassis chassis = new WheeledChassis(new  Wheel[] { wheel1, wheel2 }, WheeledChassis.TYPE_DIFFERENTIAL);
+	static MovePilot pilot = new MovePilot(chassis);
+	static final double black_color_id = 0.04;
+	static final double floor_color_id = 0.36;//.37-.35
+	//static final double BLUE = 0.02; 
+	//static final double FOIl = 0.86;
+	static final double TURN_ANGLE = 1;
+	static final double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
+	static final double SPEED = 6;
+	static final double TOLERANCE = .04;
+	
+	//static final char[] DIRECTIONS = new char[]{'l','s','r'};
 
 	
 	public static void main(String[] args) {
 		
-		PILOT.setLinearSpeed(SPEED);
+		pilot.setLinearSpeed(SPEED);
 		
-		//PILOT.
 		
 		Button.waitForAnyPress();
 		
@@ -55,11 +56,11 @@ public class MazeDraft {
 		
 		//SensorMode getRed = COLOR_SENSOR.getRedMode();
 		
-		SensorMode getTouch = TOUCH_SENSOR.getTouchMode();
+		SensorMode getTouch = touch_sensor.getTouchMode();
 		
-		SensorMode getIR = IR_SENSOR.getDistanceMode();
+		SensorMode getIR = ir_sensor.getDistanceMode();
 		
-		PILOT.forward();
+		pilot.forward();
 		
 		while(Button.getButtons() != Button.ID_ESCAPE){ 
 			
@@ -78,18 +79,18 @@ public class MazeDraft {
 			
 			if(checkIR(getIR)) {
 				
-				PILOT.travel(10);
-				turnLeft(PILOT);
-				PILOT.travel(5);
-				PILOT.forward();
+				pilot.travel(10);
+				turnLeft(pilot);
+				pilot.travel(5);
+				pilot.forward();
 				System.out.println("IR");
 				
 			}
 			
 			else if(checkIfTouching(getTouch)) {
-				backUp(PILOT);
-				turnRight(PILOT);
-				PILOT.forward();
+				backUp(pilot);
+				turnRight(pilot);
+				pilot.forward();
 				System.out.println("TOUCH");
 			}
 			/*
@@ -132,7 +133,7 @@ public class MazeDraft {
 	public static boolean isOffLine(SensorMode sensor) {
 		float [] samplevalue =  new float [sensor.sampleSize()];
 		sensor.fetchSample(samplevalue, 0) ;
-		return(samplevalue[0] == FLOOR_COLOR_ID || samplevalue[0] == BLACK_COLOR_ID);
+		return(samplevalue[0] == floor_color_id || samplevalue[0] == black_color_id);
 	}
 	
 	public static void followLine(MovePilot pilot, SensorMode sensor) {
@@ -140,10 +141,10 @@ public class MazeDraft {
 			float [] samplevalue =  new float [sensor.sampleSize()];
 			sensor.fetchSample(samplevalue, 0) ;
 			
-			if(samplevalue[0] == FLOOR_COLOR_ID) {
+			if(samplevalue[0] == floor_color_id) {
 				pilot.rotate(TURN_ANGLE);
 			}
-			else if(samplevalue[0] == BLACK_COLOR_ID) {
+			else if(samplevalue[0] == black_color_id) {
 				pilot.rotate(-TURN_ANGLE);
 			}
 		}
