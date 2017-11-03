@@ -122,16 +122,9 @@ public class MazeDraft {
 		sensor.fetchSample(samplevalue,0);
 		return (samplevalue[0]==1);
 	}
+
 	
-	/*
-	public static boolean checkColor(SensorMode sensor){
-		//To tell the difference between foil and blue, checkColor() uses getRedMode() to give different readings
-		//returns true if the color is blue, false if it is the foil
-		boolean isBlue=false;
-		return isBlue;
-	}
-	*/
-	
+	/* THIS IS WHERE THE CODE FOR THE LINE FOLLOW GOES
 	public static boolean isOffLine(SensorMode sensor) {
 		float [] samplevalue =  new float [sensor.sampleSize()];
 		sensor.fetchSample(samplevalue, 0) ;
@@ -151,6 +144,7 @@ public class MazeDraft {
 			}
 		}
 	}
+	*/
 	
 	public static void turnRight(MovePilot pilot){
 		pilot.stop();
