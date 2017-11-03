@@ -104,8 +104,9 @@ public class LineFollow {
 	    		}
 	    		
 	   		else if (samplevalue[0] < (boundary -TOLERANCE)){ 
+	   		
 	   			
-	   			PILOT.arcForward(2);
+	   			PILOT.arcForward(1);
 	   			//PILOT.forward();
 	   			System.out.println(samplevalue[0]);
 	   			
@@ -113,7 +114,7 @@ public class LineFollow {
 	   			
 	    		}
 	   		else if (samplevalue[0] > (boundary + TOLERANCE)){
-	   			PILOT.arcForward(-2);
+	   			PILOT.arcForward(-1);
 	   			
 	   			//PILOT.forward();
 	   			System.out.println(samplevalue[0]);
