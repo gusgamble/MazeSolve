@@ -34,7 +34,7 @@ public class LineFollow {
 	static final double TURN_ANGLE = 1;
 	static final double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
 	static final double SPEED = 6;
-	static final double TOLERANCE = .02;
+	static final double TOLERANCE = 0.04;
 	
 	//static final char[] DIRECTIONS = new char[]{'l','s','r'};
 	
@@ -112,13 +112,13 @@ public class LineFollow {
 	    		
 	   		else if (samplevalue[0] < (boundary -TOLERANCE)){ 
 	   		
-	   			
-	   			left_motor.setSpeed((int)300);
-	   			right_motor.setSpeed((int)0);
-	   			
+	   			while(samplevalue[0] < (boundary -TOLERANCE)){
+	   			left_motor.setSpeed((int)600);
+	   			right_motor.setSpeed((int)-10);
+	   			}
 	   			//pilot.arcForward(-5);
 	   			
-	   			Thread.sleep(100);
+	   			//Thread.sleep(100);
 				
 	   			
 	   			//PILOT.forward();
@@ -129,12 +129,13 @@ public class LineFollow {
 	    		}
 	   		else if (samplevalue[0] > (boundary + TOLERANCE)){
 	   			
-	   			right_motor.setSpeed((int)300);
-	   			left_motor.setSpeed((int)0);
-	   			
+	   			while (samplevalue[0] > (boundary + TOLERANCE)){
+	   			right_motor.setSpeed((int)600);
+	   			left_motor.setSpeed((int)-10);
+	   			}
 	   			//pilot.arcForward(5);
 	   			
-	   			Thread.sleep(100);
+	   			//Thread.sleep(100);
 	   			//pilot.arcForward(0.5);
 	   			
 	   			//PILOT.forward();
@@ -144,14 +145,14 @@ public class LineFollow {
 	    		
 	   		else {
 	   			
-	   			//left_motor.setSpeed((int)90);
-	   			//right_motor.setSpeed((int)90);
+	   			left_motor.setSpeed((int)90);
+	   			right_motor.setSpeed((int)90);
 	   			
 	   			System.out.println(samplevalue[0]);
 	   			
-	   			if(!pilot.isMoving()) {
+	   			/*if(!pilot.isMoving()) {
 	   				pilot.forward();
-	   			}
+	   			}*/
 	   		}
 		}
 	}
