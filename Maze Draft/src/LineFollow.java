@@ -95,6 +95,9 @@ public class LineFollow {
 		    
 	    		if ((samplevalue[0] >= (boundary-TOLERANCE)) && (samplevalue[0] <= (boundary+TOLERANCE))){ //normal color of floor
 	    			
+	    			
+	    			left_motor.forward();
+	    			right_motor.forward();
 	    			left_motor.setSpeed((int)90);
 	    			right_motor.setSpeed((int)90);
 	    			
@@ -112,10 +115,12 @@ public class LineFollow {
 	    		
 	   		else if (samplevalue[0] < (boundary -TOLERANCE)){ 
 	   		
-	   			while(samplevalue[0] < (boundary -TOLERANCE)){
-	   			left_motor.setSpeed((int)600);
-	   			right_motor.setSpeed((int)-10);
-	   			}
+	   			//while(samplevalue[0] < (boundary -TOLERANCE)){
+	   			left_motor.forward();
+	   			left_motor.setSpeed((int)200);
+	   			right_motor.backward();
+	   			//getColor.fetchSample(samplevalue, 0);
+	   			//}
 	   			//pilot.arcForward(-5);
 	   			
 	   			//Thread.sleep(100);
@@ -129,10 +134,12 @@ public class LineFollow {
 	    		}
 	   		else if (samplevalue[0] > (boundary + TOLERANCE)){
 	   			
-	   			while (samplevalue[0] > (boundary + TOLERANCE)){
-	   			right_motor.setSpeed((int)600);
-	   			left_motor.setSpeed((int)-10);
-	   			}
+	   			//while (samplevalue[0] > (boundary + TOLERANCE)){
+	   			right_motor.forward();
+	   			right_motor.setSpeed((int)200);
+	   			left_motor.backward();
+	   			//getColor.fetchSample(samplevalue, 0);
+	   			//}
 	   			//pilot.arcForward(5);
 	   			
 	   			//Thread.sleep(100);
