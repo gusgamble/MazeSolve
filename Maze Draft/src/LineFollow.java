@@ -52,8 +52,8 @@ public class LineFollow {
 		//Button.waitForAnyPress();
 		
 		pilot.setLinearSpeed(SPEED);
-		//pilot.setAngularAcceleration(pilot.getMaxAngularAcceleration());
-		pilot.setAngularSpeed(pilot.getMaxAngularSpeed());
+		pilot.setAngularAcceleration(720);
+		//pilot.setAngularSpeed(pilot.getMaxAngularSpeed());
 		
 		//mode that measures reflected light
 		
@@ -95,8 +95,10 @@ public class LineFollow {
 		    
 	    		if ((samplevalue[0] >= (boundary-TOLERANCE)) && (samplevalue[0] <= (boundary+TOLERANCE))){ //normal color of floor
 	    			
-	    			left_motor.setSpeed((int)90);
-	    			right_motor.setSpeed((int)90);
+	    			//left_motor.setSpeed((int)90);
+	    			//right_motor.setSpeed((int)90);
+	    			
+	    			//pilot.forward();
 	    			
 	    			System.out.println(samplevalue[0]);
 	    			
@@ -110,11 +112,14 @@ public class LineFollow {
 	   		else if (samplevalue[0] < (boundary -TOLERANCE)){ 
 	   		
 	   			
-	   			left_motor.setSpeed((int)600);
-	   			right_motor.setSpeed((int)30);
+	   			//left_motor.setSpeed((int)600);
+	   			//right_motor.setSpeed((int)30);
+	   			
+	   			pilot.arcForward(-5);
+	   			
 	   			Thread.sleep(100);
 				
-	   			//pilot.arcForward(0.5);
+	   			
 	   			//PILOT.forward();
 	   			System.out.println(samplevalue[0]);
 	   			
@@ -123,8 +128,11 @@ public class LineFollow {
 	    		}
 	   		else if (samplevalue[0] > (boundary + TOLERANCE)){
 	   			
-	   			right_motor.setSpeed((int)600);
-	   			left_motor.setSpeed((int)30);
+	   			//right_motor.setSpeed((int)600);
+	   			//left_motor.setSpeed((int)30);
+	   			
+	   			pilot.arcForward(5);
+	   			
 	   			Thread.sleep(100);
 	   			//pilot.arcForward(0.5);
 	   			
@@ -135,14 +143,14 @@ public class LineFollow {
 	    		
 	   		else {
 	   			
-	   			left_motor.setSpeed((int)90);
-	   			right_motor.setSpeed((int)90);
+	   			//left_motor.setSpeed((int)90);
+	   			//right_motor.setSpeed((int)90);
 	   			
 	   			System.out.println(samplevalue[0]);
 	   			
-	   			/*if(!PILOT.isMoving()) {
-	   				PILOT.forward();
-	   			}*/
+	   			if(!pilot.isMoving()) {
+	   				pilot.forward();
+	   			}
 	   		}
 		}
 	}
