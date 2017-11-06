@@ -29,6 +29,9 @@ public class MazeDraft {
 	static MovePilot pilot = new MovePilot(chassis);
 	static final double black_color_id = 0.04;
 	static final double floor_color_id = 0.36;//.37-.35
+	static double lineHSV;
+	static double blackHSV;
+	static double woodHSV;
 	//static final double BLUE = 0.02; 
 	//static final double FOIl = 0.86;
 	static final double TURN_ANGLE = 1;
