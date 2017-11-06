@@ -161,9 +161,15 @@ public class MazeDraft {
 		pilot.travel(-2);
 	}
 
-	public static void calibrate(MovePilot pilot)
+	public static void calibrateColor(MovePilot pilot)
 	{
-		
+		color_sensor.setRGBMode();
+		lineHSV = RGBtoHSV(color_sensor.getColor());
+		pilot.rotate(-5);
+		blackHSV = RGBtoHSV(color_sensor.getColor());
+		pilot.rotate(10);
+		woodHSV = RGBtoHSV(color_sensor.getColor());
+		pilot.rotate(-5);
 	}
 	
 	public static double[] RGBtoHSV(Color colors){
