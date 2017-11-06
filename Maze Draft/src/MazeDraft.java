@@ -8,7 +8,8 @@ import lejos.hardware.Button;
 import lejos.hardware.port.SensorPort;
 import lejos.robotics.navigation.*;
 import lejos.hardware.motor.EV3LargeRegulatedMotor; 
-import lejos.hardware.port.MotorPort; 
+import lejos.hardware.port.MotorPort;
+import lejos.robotics.Color;
 import lejos.robotics.chassis.Chassis; 
 import lejos.robotics.chassis.Wheel; 
 import lejos.robotics.chassis.WheeledChassis;
@@ -41,19 +42,12 @@ public class MazeDraft {
 	public static void main(String[] args) {
 		
 		pilot.setLinearSpeed(SPEED);
-		
-		
 		Button.waitForAnyPress();
 		
 		while(Button.getButtons() != Button.ID_ESCAPE){
 			//this is where we implement the methods that instigate the actions (also in the methods below)
 			
 		}
-		
-		
-		
-		
-		
 		//SensorMode getRed = color_sensor.getRedMode();
 		
 		SensorMode getTouch = touch_sensor.getTouchMode();
@@ -161,5 +155,47 @@ public class MazeDraft {
 	public static void backUp(MovePilot pilot){
 		pilot.travel(-2);
 	}
+
+	public static void calibrate(MovePilot pilot)
+	{
 		
+	}
+	
+	public static double[] RGBtoHSV(Color colors){
+		double[] hsv = new double[3];
+		// read colors
+		int r = colors.getRed();
+		int b = colors.getBlue();
+		int g = colors.getGreen();
+		
+		double min = Math.min(r, Math.min(b,g));
+		double max = Math.max(r, Math.max(b, g));
+		double delta = max - min;
+		hsv[2] = max/255; //set v to max as a percentage
+		if (max != 0){
+			hsv[1] = delta/max;
+		}
+		else{ //r = b = g =0 
+			hsv[1] = 0; //s = 0;		// s = 0, v is undefined
+			hsv[0] = -1; //h = -1;
+			return hsv;
+		}
+		
+		if (r == max){
+			hsv[0] = (g-b)/delta; //h 
+		}
+		else{
+			if (g == max)
+				hsv[0] = 2 + (b - r)/delta; //h
+			else
+				hsv[0] = 4 + (r - g)/delta; //h
+		}
+		
+		hsv[0] *=60;	//degrees
+		if (hsv[0] < 0)
+			hsv[0] +=360;
+		
+		return hsv;
+	}
+	
 }
