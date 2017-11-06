@@ -13,12 +13,11 @@ import lejos.robotics.Color;
 import lejos.robotics.chassis.Chassis; 
 import lejos.robotics.chassis.Wheel; 
 import lejos.robotics.chassis.WheeledChassis;
-import lejos.robotics.Color;
 import lejos.utility.Delay;
 
 public class MazeDraft {
 	
-	static EV3ColorSensor color_sensor = new EV3ColorSensor(SensorPort.S4);
+	static ColorSensor color_sensor = new ColorSensor(SensorPort.S4);
 	static EV3TouchSensor touch_sensor = new EV3TouchSensor(SensorPort.S2);
 	static EV3IRSensor ir_sensor = new EV3IRSensor(SensorPort.S3);
 	
