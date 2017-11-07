@@ -49,40 +49,8 @@ public class LineFollow {
 		
 		double boundary = samplevalue1[0];	
 		
-		//Button.waitForAnyPress();
 		
-		pilot.setLinearSpeed(SPEED);
-		pilot.setAngularAcceleration(720);
-		//pilot.setAngularSpeed(pilot.getMaxAngularSpeed());
-		
-		//mode that measures reflected light
-		
-		
-		
-		/**CALIBRATION
-		 * Print out on screen instruction for user to place robot on black line
-		 * and press certain button
-		 * Read color sensor
-		 * Save that condition as 0 value in calibrate mode
-		 * Do same thing for the light colored floor, except value is 100
-		 */
-		
-		//the code commented below is intended to deal with calibration of the robot. It still needs to be completed, but this is my first crack at it
-		/*
-		System.out.println("Place the robot on the line and then press the x button");
-		
-		int b1 = Button.waitForAnyPress();
-		if (b1 == x) {
-			float blackLine = getColor.sampleSize();
-		}
-		
-		System.out.println("Place the robot on the ground and then press the y button");
-		
-		int b2 = Button.waitForAnyPress(); 
-		if (b2 == y) {
-			float floor = getColor.sampleSize();
-		}*/
-		
+		pilot.setLinearSpeed(SPEED);		
 		pilot.forward();
 		
 		while(Button.getButtons() != Button.ID_ESCAPE){  
@@ -101,32 +69,16 @@ public class LineFollow {
 	    			left_motor.setSpeed((int)90);
 	    			right_motor.setSpeed((int)90);
 	    			
-	    			//pilot.forward();
+	    			
 	    			
 	    			System.out.println(samplevalue[0]);
-	    			
-	    			/*
-	    			if(!pilot.isMoving())
-	    				pilot.forward();
-	   			*/
-	   				
-	   			//getColor.fetchSample(samplevalue, 0);
 	    		}
 	    		
 	   		else if (samplevalue[0] < (boundary -TOLERANCE)){ 
-	   		
-	   			//while(samplevalue[0] < (boundary -TOLERANCE)){
+	   	
 	   			left_motor.forward();
 	   			left_motor.setSpeed((int)200);
 	   			right_motor.backward();
-	   			//getColor.fetchSample(samplevalue, 0);
-	   			//}
-	   			//pilot.arcForward(-5);
-	   			
-	   			//Thread.sleep(100);
-				
-	   			
-	   			//PILOT.forward();
 	   			System.out.println(samplevalue[0]);
 	   			
 	   			
@@ -134,21 +86,11 @@ public class LineFollow {
 	    		}
 	   		else if (samplevalue[0] > (boundary + TOLERANCE)){
 	   			
-	   			//while (samplevalue[0] > (boundary + TOLERANCE)){
 	   			right_motor.forward();
 	   			right_motor.setSpeed((int)200);
 	   			left_motor.backward();
-	   			//getColor.fetchSample(samplevalue, 0);
-	   			//}
-	   			//pilot.arcForward(5);
-	   			
-	   			//Thread.sleep(100);
-	   			//pilot.arcForward(0.5);
-	   			
-	   			//PILOT.forward();
 	   			System.out.println(samplevalue[0]);
 	   		}
-	   		//else if(samplevalue[0] == BLUE)
 	    		
 	   		else {
 	   			
@@ -157,9 +99,6 @@ public class LineFollow {
 	   			
 	   			System.out.println(samplevalue[0]);
 	   			
-	   			/*if(!pilot.isMoving()) {
-	   				pilot.forward();
-	   			}*/
 	   		}
 		}
 	}
