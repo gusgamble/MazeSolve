@@ -39,6 +39,7 @@ public class MazeDraft {
 	static final double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
 	static final double SPEED = 6;
 	static final double TOLERANCE = .04;
+	static boolean[] directions = {false, false, false};
 	
 	//static final char[] DIRECTIONS = new char[]{'l','s','r'};
 
@@ -62,21 +63,6 @@ public class MazeDraft {
 		
 		while(Button.getButtons() != Button.ID_ESCAPE){ 
 			
-			/*float [] samplevalue =  new float [getRed.sampleSize()];
-			getRed.fetchSample(samplevalue, 0) ;
-			
-			if(samplevalue[0] == FLOOR_COLOR_ID) {
-				PILOT.rotate(TURN_ANGLE);
-			}
-			else if(samplevalue[0] == BLACK_COLOR_ID) {
-				PILOT.rotate(-TURN_ANGLE);
-			}
-			else
-				PILOT.forward();
-				*/
-			
-			//followLine(pilot, getRed);
-			
 			if(checkIR(getIR)) {
 				
 				pilot.travel(10);
@@ -93,12 +79,7 @@ public class MazeDraft {
 				pilot.forward();
 				System.out.println("TOUCH");
 			}
-			/*
-			else if(!PILOT.isMoving()){
-				PILOT.forward();
-				System.out.println("NOT MOVING");
-			}
-			*/
+
 			else {
 				//PILOT.forward();
 				//System.out.println("ELSE");
