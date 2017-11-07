@@ -49,6 +49,9 @@ public class MazeDraft {
 		pilot.setLinearSpeed(SPEED);
 		Button.waitForAnyPress();
 		
+		calibrateColor(pilot);
+		
+		/*
 		while(Button.getButtons() != Button.ID_ESCAPE){
 			//this is where we implement the methods that instigate the actions (also in the methods below)
 			
@@ -86,6 +89,7 @@ public class MazeDraft {
 			}
 			
 		}
+		*/
 		
 		
 	}
@@ -109,7 +113,7 @@ public class MazeDraft {
 		sensor.fetchSample(samplevalue, 0) ;
 		return(samplevalue[0] == floor_color_id || samplevalue[0] == black_color_id);
 	}
-	
+	/*
 	public static void followLine(MovePilot pilot, SensorMode sensor, double boundary) {
 		
 		
@@ -162,7 +166,7 @@ public class MazeDraft {
 	   		}
 		
 	}
-	
+	*/
 	
 	public static void turnRight(MovePilot pilot){
 		pilot.stop();
