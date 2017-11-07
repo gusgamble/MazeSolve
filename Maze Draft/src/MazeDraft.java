@@ -122,27 +122,66 @@ public class MazeDraft {
 	}
 
 	
-	/* THIS IS WHERE THE CODE FOR THE LINE FOLLOW GOES
+	// THIS IS WHERE THE CODE FOR THE LINE FOLLOW GOES
 	public static boolean isOffLine(SensorMode sensor) {
 		float [] samplevalue =  new float [sensor.sampleSize()];
 		sensor.fetchSample(samplevalue, 0) ;
 		return(samplevalue[0] == floor_color_id || samplevalue[0] == black_color_id);
 	}
 	
-	public static void followLine(MovePilot pilot, SensorMode sensor) {
+	public static void followLine(MovePilot pilot, SensorMode sensor, double boundary) {
+		
 		while(isOffLine(sensor)){
-			float [] samplevalue =  new float [sensor.sampleSize()];
-			sensor.fetchSample(samplevalue, 0) ;
 			
-			if(samplevalue[0] == floor_color_id) {
-				pilot.rotate(TURN_ANGLE);
-			}
-			else if(samplevalue[0] == black_color_id) {
-				pilot.rotate(-TURN_ANGLE);
-			}
+			//the error below will be fixed when hsv is implemented
+			sensor = color_sensor.getRedMode();
+			float [] samplevalue =  new float [sensor.sampleSize()];
+			
+		    sensor.fetchSample(samplevalue, 0);
+		    System.out.println(samplevalue[0]);
+		    
+	    		if ((samplevalue[0] >= (boundary-TOLERANCE)) && (samplevalue[0] <= (boundary+TOLERANCE))){ //normal color of floor
+	    			
+	    			
+	    			left_motor.forward();
+	    			right_motor.forward();
+	    			left_motor.setSpeed((int)90);
+	    			right_motor.setSpeed((int)90);
+	    			
+	    			
+	    			
+	    			System.out.println(samplevalue[0]);
+	    		}
+	    		
+	   		else if (samplevalue[0] < (boundary -TOLERANCE)){ 
+	   	
+	   			left_motor.forward();
+	   			left_motor.setSpeed((int)200);
+	   			right_motor.backward();
+	   			System.out.println(samplevalue[0]);
+	   			
+	   			
+	   			
+	    		}
+	   		else if (samplevalue[0] > (boundary + TOLERANCE)){
+	   			
+	   			right_motor.forward();
+	   			right_motor.setSpeed((int)200);
+	   			left_motor.backward();
+	   			System.out.println(samplevalue[0]);
+	   		}
+	    		
+	   		else {
+	   			
+	   			left_motor.setSpeed((int)90);
+	   			right_motor.setSpeed((int)90);
+	   			
+	   			System.out.println(samplevalue[0]);
+	   			
+	   		}
 		}
 	}
-	*/
+	
 	
 	public static void turnRight(MovePilot pilot){
 		pilot.stop();
