@@ -131,7 +131,7 @@ public class MazeDraft {
 	
 	public static void followLine(MovePilot pilot, SensorMode sensor, double boundary) {
 		
-		while(isOffLine(sensor)){
+		
 			
 			//the error below will be fixed when hsv is implemented
 			sensor = color_sensor.getRedMode();
@@ -179,7 +179,7 @@ public class MazeDraft {
 	   			System.out.println(samplevalue[0]);
 	   			
 	   		}
-		}
+		
 	}
 	
 	
