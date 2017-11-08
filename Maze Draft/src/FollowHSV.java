@@ -2,9 +2,6 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3IRSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.hardware.sensor.SensorMode;
-
-import java.util.Stack;
-
 import lejos.hardware.Button;
 import lejos.hardware.port.SensorPort;
 import lejos.robotics.navigation.*;
@@ -29,36 +26,22 @@ public class FollowHSV {
 	static Wheel wheel2 = WheeledChassis.modelWheel(right_motor , 2.0).offset(5.5);
 	static Chassis chassis = new WheeledChassis(new  Wheel[] { wheel1, wheel2 }, WheeledChassis.TYPE_DIFFERENTIAL);
 	static MovePilot pilot = new MovePilot(chassis);
-	static final double black_color_id = 0.04;
-	static final double floor_color_id = 0.36;//.37-.35
 	static double[] lineHSV = new double[3];
 	static double[] blackHSV= new double[3];
 	static double[] woodHSV= new double[3];
 	static double [] blueHSV= new double[3];
-	//static final double BLUE = 0.02; 
-	//static final double FOIl = 0.86;
 	static final double TURN_ANGLE = 1;
-	static final double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
 	static final double SPEED = 6;
 	static final double TOLERANCE = .04;
-	static int[] directions = {0, 1, 2};
-	static int lastIntersection =4;
 	
 public static void main(String[] args) throws InterruptedException {
-		
-		Stack<Integer> turns = new Stack<Integer>();
 		
 		pilot.setLinearSpeed(SPEED);
 		Button.waitForAnyPress();
 		
 		calibrateColor(pilot);
-		Thread.sleep(1000000000);
 		
 		Color rgb;
-		
-		SensorMode getTouch = touch_sensor.getTouchMode();
-		
-		SensorMode getIR = ir_sensor.getDistanceMode();
 		
 		pilot.forward();
 		
@@ -80,10 +63,6 @@ public static void main(String[] args) throws InterruptedException {
 	    			right_motor.setSpeed((int)90);
 	    			
 	    			System.out.println(samplevalue[0]);
-	    			
-	    			if (checkIfTouching(getTouch)) {
-	    				lastIntersection = turns.pop();
-	    			}
 	    		}
 	    		
 	   		else if (samplevalue[0] == blackHSV[0]){ 
@@ -92,32 +71,7 @@ public static void main(String[] args) throws InterruptedException {
 	   			left_motor.setSpeed((int)200);
 	   			right_motor.backward();
 	   			System.out.println(samplevalue[0]);	
-	    		}
-	   		
-	   		else if (samplevalue[0] == woodHSV[0]){
-	   			right_motor.forward();
-	   			right_motor.setSpeed((int)200);
-	   			left_motor.backward();
-	   			System.out.println(samplevalue[0]);
-	   		}
-	    		
-	   		else if(samplevalue[0] == blueHSV[0]) {
-	   			if (checkIR(getIR)) {
-	   				turnLeft(pilot);
-	   				turns.push(directions[0]);
-	   			}
-	   			else {
-	   				pilot.travel(5);
-	   				turns.push(directions[1]);
-	   			}
-	   		}
-	    		
-	   		else if (checkIfTouching(getTouch)) {
-	   			lastIntersection = turns.pop();
-	   			pilot.travel(-2);
-	   			pilot.rotate(180);
-	   		}
-	    		
+	    		}	   		
 	   		else {
 	   			left_motor.setSpeed((int)90);
 	   			right_motor.setSpeed((int)90);
