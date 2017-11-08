@@ -54,7 +54,7 @@ public static void main(String[] args) throws InterruptedException {
 				double[] samplevalue = RGBtoHSV(rgb);
 		    System.out.println(samplevalue[0]);
 		    
-	    		if ((samplevalue[0]-woodHSV[0])<TOLERANCE){ //normal color of floor
+	    		if ((samplevalue[0]-woodHSV[0])<=TOLERANCE || (samplevalue[0]-woodHSV[0])>TOLERANCE){ //normal color of floor
 	    			
 	    			
 	    			left_motor.forward();
@@ -65,7 +65,7 @@ public static void main(String[] args) throws InterruptedException {
 	    			System.out.println(samplevalue[0]);
 	    		}
 	    		
-	   		else if ((samplevalue[0]-blackHSV[0])<TOLERANCE){ 
+	   		else if ((samplevalue[0]-blackHSV[0])<=TOLERANCE || (samplevalue[0]-blackHSV[0])>TOLERANCE){ 
 	   	
 	   			left_motor.forward();
 	   			left_motor.setSpeed((int)200);
@@ -104,21 +104,21 @@ public static void calibrateColor(MovePilot pilot) throws InterruptedException
 	System.out.println(lineHSV[0]);
 	Thread.sleep(500);
 	
-	pilot.rotate(-20);
+	pilot.rotate(-25);
 	Thread.sleep(100);
 	
 	blackHSV = RGBtoHSV(color_sensor.getColor());
 	System.out.println(blackHSV[0]);
 	Thread.sleep(500);
 	
-	pilot.rotate(40);
+	pilot.rotate(50);
 	Thread.sleep(100);
 	
 	woodHSV = RGBtoHSV(color_sensor.getColor());
 	System.out.println(woodHSV[0]);
 	Thread.sleep(500);
 	
-	pilot.rotate(-20);
+	pilot.rotate(-25);
 }
 
 public static double[] RGBtoHSV(Color colors){
