@@ -188,11 +188,11 @@ public class MazeDraft {
 	{
 		color_sensor.setRGBMode();
 		lineHSV = RGBtoHSV(color_sensor.getColor());
-		pilot.rotate(-5);
+		pilot.rotate(-45);
 		blackHSV = RGBtoHSV(color_sensor.getColor());
-		pilot.rotate(10);
+		pilot.rotate(90);
 		woodHSV = RGBtoHSV(color_sensor.getColor());
-		pilot.rotate(-5);
+		pilot.rotate(-45);
 	}
 	
 	public static double[] RGBtoHSV(Color colors){
