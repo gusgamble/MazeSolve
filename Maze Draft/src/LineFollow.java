@@ -59,12 +59,12 @@ public class LineFollow {
 			SensorMode getColor = color_sensor.getRedMode();
 			float [] samplevalue =  new float [getColor.sampleSize()];
 			
-			SensorMode toucher = touch_sensor.getTouchMode();
+			
 			
 		    getColor.fetchSample(samplevalue, 0);
 		    System.out.println(samplevalue[0]);
 		    
-	    		if ((samplevalue[0] >= (boundary-TOLERANCE)) && (samplevalue[0] <= (boundary+TOLERANCE))){ //normal color of floor
+	    		if ((samplevalue[0] >= (boundary-TOLERANCE)) && (samplevalue[0] <= (boundary+TOLERANCE))){ //if on the between
 	    			
 	    			
 	    			left_motor.forward();
@@ -75,37 +75,72 @@ public class LineFollow {
 	    			
 	    			
 	    			System.out.println(samplevalue[0]);
+	    			
+	    			SensorMode toucher = touch_sensor.getTouchMode();
+	    			if (checkIfTouching(toucher)) {
+	    	   			System.out.println("TOUCH!!");
+	    	   			right_motor.stop();
+	    	   			left_motor.stop();
+	    	   			
+	    	   			pilot.travel(-2);
+	    	   			pilot.rotate(-150);
+	    	   			left_motor.forward();
+	    	   			right_motor.forward();
+	    	   		}
 	    		}
 	    		
-	   		else if (samplevalue[0] < (boundary -TOLERANCE)){ 
+	   		else if (samplevalue[0] < (boundary -TOLERANCE)){ //if on the tape
 	   	
 	   			left_motor.forward();
 	   			left_motor.setSpeed((int)300);
 	   			right_motor.backward();
 	   			System.out.println(samplevalue[0]);
 	   			
-	   			
+	   			/*
+	   			SensorMode toucher = touch_sensor.getTouchMode();
+	   			if (checkIfTouching(toucher)) {
+		   			System.out.println("TOUCH!!");
+		   			right_motor.stop();
+		   			left_motor.stop();
+		   			
+		   			pilot.travel(-2);
+		   			pilot.rotate(-170);
+		   		}*/
 	   			
 	    		}
-	   		else if (samplevalue[0] > (boundary + TOLERANCE)){
+	   		else if (samplevalue[0] > (boundary + TOLERANCE)){//if on the wood
 	   			
 	   			right_motor.forward();
 	   			right_motor.setSpeed((int)300);
 	   			left_motor.backward();
 	   			System.out.println(samplevalue[0]);
+	   			
+	   			/*
+	   			SensorMode toucher = touch_sensor.getTouchMode();
+	   			if (checkIfTouching(toucher)) {
+		   			System.out.println("TOUCH!!");
+		   			right_motor.stop();
+		   			left_motor.stop();
+		   			
+		   			pilot.travel(-2);
+		   			pilot.rotate(-170);
+		   		}*/
 	   		}
 	    		
-	   		else if (checkIfTouching(toucher)) {
-	   			System.out.println("TOUCH!!");
-	   			right_motor.stop();
-	   			left_motor.stop();
+	   		
+	   		else{
 	   			
-	   			pilot.travel(-2);
-	   			pilot.rotate(180);
-	   		}
-	    		
-	   		else {
-	   			
+	   			SensorMode toucher = touch_sensor.getTouchMode();
+	   			if (checkIfTouching(toucher)) {
+		   			System.out.println("TOUCH!!");
+		   			right_motor.stop();
+		   			left_motor.stop();
+		   			
+		   			pilot.travel(-2);
+		   			pilot.rotate(-150);
+		   			left_motor.forward();
+    	   				right_motor.forward();
+		   		}
 	   			left_motor.setSpeed((int)150);
 	   			right_motor.setSpeed((int)150);
 	   			
