@@ -94,6 +94,9 @@ public class LineFollow {
 	   		}
 	    		
 	   		else if (checkIfTouching(toucher)) {
+	   			right_motor.stop();
+	   			left_motor.stop();
+	   			
 	   			pilot.travel(-2);
 	   			pilot.rotate(180);
 	   		}
