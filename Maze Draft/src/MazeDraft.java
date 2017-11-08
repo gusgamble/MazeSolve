@@ -193,11 +193,15 @@ public class MazeDraft {
 		Thread.sleep(500);
 		
 		pilot.rotate(-20);
+		Thread.sleep(100);
+		
 		blackHSV = RGBtoHSV(color_sensor.getColor());
 		System.out.println(blackHSV[0]);
 		Thread.sleep(500);
 		
 		pilot.rotate(40);
+		Thread.sleep(100);
+		
 		woodHSV = RGBtoHSV(color_sensor.getColor());
 		System.out.println(woodHSV[0]);
 		Thread.sleep(500);
