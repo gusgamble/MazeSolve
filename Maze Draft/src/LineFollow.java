@@ -83,7 +83,8 @@ public class LineFollow {
 	    	   			left_motor.stop();
 	    	   			
 	    	   			pilot.travel(-2);
-	    	   			pilot.rotate(-150);
+	    	   			pilot.rotate(-180);
+	    	   			pilot.travel(3);
 	    	   			left_motor.forward();
 	    	   			right_motor.forward();
 	    	   		}
@@ -119,7 +120,7 @@ public class LineFollow {
 	   		
 	   		else{
 	   			
-	   			SensorMode toucher = touch_sensor.getTouchMode();
+	   			/*SensorMode toucher = touch_sensor.getTouchMode();
 	   			if (checkIfTouching(toucher)) {
 		   			System.out.println("OUCH !!!");
 		   			right_motor.stop();
@@ -129,7 +130,7 @@ public class LineFollow {
 		   			pilot.rotate(-150);
 		   			left_motor.forward();
     	   				right_motor.forward();
-		   		}
+		   		}*/
 	   			left_motor.setSpeed((int)150);
 	   			right_motor.setSpeed((int)150);
 	   			
