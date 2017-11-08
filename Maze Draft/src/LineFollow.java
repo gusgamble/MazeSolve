@@ -96,7 +96,7 @@ public class LineFollow {
 	   		}
 	    		
 	   		else if (checkIfTouching(toucher)) {
-	   			System.out.println("TOUCH!!");
+	   			System.out.println("OUCH !");
 	   			right_motor.stop();
 	   			left_motor.stop();
 	   			
