@@ -66,8 +66,8 @@ public class LineFollow {
 	    			
 	    			left_motor.forward();
 	    			right_motor.forward();
-	    			left_motor.setSpeed((int)90);
-	    			right_motor.setSpeed((int)90);
+	    			left_motor.setSpeed((int)150);
+	    			right_motor.setSpeed((int)150);
 	    			
 	    			
 	    			
@@ -77,7 +77,7 @@ public class LineFollow {
 	   		else if (samplevalue[0] < (boundary -TOLERANCE)){ 
 	   	
 	   			left_motor.forward();
-	   			left_motor.setSpeed((int)200);
+	   			left_motor.setSpeed((int)300);
 	   			right_motor.backward();
 	   			System.out.println(samplevalue[0]);
 	   			
@@ -87,15 +87,15 @@ public class LineFollow {
 	   		else if (samplevalue[0] > (boundary + TOLERANCE)){
 	   			
 	   			right_motor.forward();
-	   			right_motor.setSpeed((int)200);
+	   			right_motor.setSpeed((int)300);
 	   			left_motor.backward();
 	   			System.out.println(samplevalue[0]);
 	   		}
 	    		
 	   		else {
 	   			
-	   			left_motor.setSpeed((int)90);
-	   			right_motor.setSpeed((int)90);
+	   			left_motor.setSpeed((int)150);
+	   			right_motor.setSpeed((int)150);
 	   			
 	   			System.out.println(samplevalue[0]);
 	   			
