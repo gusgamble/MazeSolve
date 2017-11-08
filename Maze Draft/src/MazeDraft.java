@@ -184,17 +184,24 @@ public class MazeDraft {
 		pilot.travel(-2);
 	}
 
-	public static void calibrateColor(MovePilot pilot)
+	public static void calibrateColor(MovePilot pilot) throws InterruptedException
 	{
 		color_sensor.setRGBMode();
+		
 		lineHSV = RGBtoHSV(color_sensor.getColor());
 		System.out.println(lineHSV[0]);
+		Thread.sleep(500);
+		
 		pilot.rotate(-20);
 		blackHSV = RGBtoHSV(color_sensor.getColor());
 		System.out.println(blackHSV[0]);
+		Thread.sleep(500);
+		
 		pilot.rotate(40);
 		woodHSV = RGBtoHSV(color_sensor.getColor());
 		System.out.println(woodHSV[0]);
+		Thread.sleep(500);
+		
 		pilot.rotate(-20);
 	}
 	
