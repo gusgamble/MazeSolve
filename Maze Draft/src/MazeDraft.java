@@ -44,13 +44,13 @@ public class MazeDraft {
 	//static final char[] DIRECTIONS = new char[]{'l','s','r'};
 
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		
 		pilot.setLinearSpeed(SPEED);
 		Button.waitForAnyPress();
 		
 		calibrateColor(pilot);
-		
+		Thread.sleep(1000000000);
 		/*
 		while(Button.getButtons() != Button.ID_ESCAPE){
 			//this is where we implement the methods that instigate the actions (also in the methods below)
@@ -188,11 +188,14 @@ public class MazeDraft {
 	{
 		color_sensor.setRGBMode();
 		lineHSV = RGBtoHSV(color_sensor.getColor());
-		pilot.rotate(-45);
+		System.out.println(lineHSV[0]);
+		pilot.rotate(-20);
 		blackHSV = RGBtoHSV(color_sensor.getColor());
-		pilot.rotate(90);
+		System.out.println(blackHSV[0]);
+		pilot.rotate(40);
 		woodHSV = RGBtoHSV(color_sensor.getColor());
-		pilot.rotate(-45);
+		System.out.println(woodHSV[0]);
+		pilot.rotate(-20);
 	}
 	
 	public static double[] RGBtoHSV(Color colors){
