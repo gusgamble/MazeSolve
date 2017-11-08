@@ -114,19 +114,8 @@ public class LineFollow {
 	   			right_motor.setSpeed((int)300);
 	   			left_motor.backward();
 	   			System.out.println(samplevalue[0]);
-	   			
-	   			/*
-	   			SensorMode toucher = touch_sensor.getTouchMode();
-	   			if (checkIfTouching(toucher)) {
-		   			System.out.println("TOUCH!!");
-		   			right_motor.stop();
-		   			left_motor.stop();
-		   			
-		   			pilot.travel(-2);
-		   			pilot.rotate(-170);
-		   		}*/
+
 	   		}
-	    		
 	   		
 	   		else{
 	   			
