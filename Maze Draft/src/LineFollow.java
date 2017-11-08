@@ -83,8 +83,8 @@ public class LineFollow {
 	    	   			left_motor.stop();
 	    	   			
 	    	   			pilot.travel(-2);
-	    	   			pilot.rotate(-180);
-	    	   			pilot.travel(3);
+	    	   			pilot.rotate(-160);
+	    	   			pilot.travel(6);
 	    	   			left_motor.forward();
 	    	   			right_motor.forward();
 	    	   		}
