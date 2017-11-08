@@ -78,7 +78,7 @@ public class LineFollow {
 	    			
 	    			SensorMode toucher = touch_sensor.getTouchMode();
 	    			if (checkIfTouching(toucher)) {
-	    	   			System.out.println("TOUCH!!");
+	    	   			System.out.println("OUCH !!!");
 	    	   			right_motor.stop();
 	    	   			left_motor.stop();
 	    	   			
@@ -121,7 +121,7 @@ public class LineFollow {
 	   			
 	   			SensorMode toucher = touch_sensor.getTouchMode();
 	   			if (checkIfTouching(toucher)) {
-		   			System.out.println("TOUCH!!");
+		   			System.out.println("OUCH !!!");
 		   			right_motor.stop();
 		   			left_motor.stop();
 		   			
