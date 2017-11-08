@@ -53,10 +53,13 @@ public class LineFollow {
 		pilot.setLinearSpeed(SPEED);		
 		pilot.forward();
 		
+		
 		while(Button.getButtons() != Button.ID_ESCAPE){  
 			
 			SensorMode getColor = color_sensor.getRedMode();
 			float [] samplevalue =  new float [getColor.sampleSize()];
+			
+			SensorMode toucher = touch_sensor.getTouchMode();
 			
 		    getColor.fetchSample(samplevalue, 0);
 		    System.out.println(samplevalue[0]);
@@ -92,6 +95,15 @@ public class LineFollow {
 	   			System.out.println(samplevalue[0]);
 	   		}
 	    		
+	   		else if (checkIfTouching(toucher)) {
+	   			System.out.println("TOUCH!!");
+	   			right_motor.stop();
+	   			left_motor.stop();
+	   			
+	   			pilot.travel(-2);
+	   			pilot.rotate(180);
+	   		}
+	    		
 	   		else {
 	   			
 	   			left_motor.setSpeed((int)150);
@@ -101,5 +113,11 @@ public class LineFollow {
 	   			
 	   		}
 		}
+	}
+	
+	public static boolean checkIfTouching(SensorMode sensor){
+		float [] samplevalue =  new float [sensor.sampleSize()];
+		sensor.fetchSample(samplevalue,0);
+		return (samplevalue[0]==1);
 	}
 }
