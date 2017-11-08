@@ -52,12 +52,14 @@ public class LineFollow {
 		
 		pilot.setLinearSpeed(SPEED);		
 		pilot.forward();
-		SensorMode toucher = touch_sensor.getTouchMode();
+		
 		
 		while(Button.getButtons() != Button.ID_ESCAPE){  
 			
 			SensorMode getColor = color_sensor.getRedMode();
 			float [] samplevalue =  new float [getColor.sampleSize()];
+			
+			SensorMode toucher = touch_sensor.getTouchMode();
 			
 		    getColor.fetchSample(samplevalue, 0);
 		    System.out.println(samplevalue[0]);
