@@ -26,7 +26,7 @@ public class MazeDraft {
 	
 	static EV3LargeRegulatedMotor left_motor = new EV3LargeRegulatedMotor(MotorPort.D);
 	static EV3LargeRegulatedMotor right_motor = new EV3LargeRegulatedMotor(MotorPort.A);
-	
+
 	static Wheel wheel1 = WheeledChassis.modelWheel(left_motor , 2.0).offset(-5.5);
 	static Wheel wheel2 = WheeledChassis.modelWheel(right_motor , 2.0).offset(5.5);
 	static Chassis chassis = new WheeledChassis(new  Wheel[] { wheel1, wheel2 }, WheeledChassis.TYPE_DIFFERENTIAL);
@@ -59,7 +59,7 @@ public class MazeDraft {
 		calibrateColor(pilot);
 		Thread.sleep(1000000000);
 		
-		
+		Color rgb;
 		
 		SensorMode getTouch = touch_sensor.getTouchMode();
 		
@@ -71,10 +71,9 @@ public class MazeDraft {
 		
 		while(Button.getButtons() != Button.ID_ESCAPE){ 
 			
-			SensorMode getColor = color_sensor.getRed()
-			float [] samplevalue =  new float [getColor.sampleSize()];
 			
-		    getColor.fetchSample(samplevalue, 0);
+				rgb = color_sensor.getColor();
+				double[] samplevalue = RGBtoHSV(rgb);
 		    System.out.println(samplevalue[0]);
 		    
 	    		if ((samplevalue[0] == woodHSV[0])){ //normal color of floor
@@ -144,7 +143,7 @@ public class MazeDraft {
 	}
 		
 		
-	}
+	
 	
 	public static boolean checkIR(SensorMode sensor){
 		float [] samplevalue =  new float [sensor.sampleSize()];
