@@ -4,6 +4,9 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3IRSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.hardware.sensor.SensorMode;
+
+import java.util.Stack;
+
 import lejos.hardware.Button;
 import lejos.hardware.port.SensorPort;
 import lejos.robotics.navigation.*;
@@ -39,24 +42,23 @@ public class MazeDraft {
 	static final double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
 	static final double SPEED = 6;
 	static final double TOLERANCE = .04;
-	static boolean[] directions = {false, false, false};
+	static int[] directions = {0, 1, 2};
+	static int lastIntersection =4;
 	
 	//static final char[] DIRECTIONS = new char[]{'l','s','r'};
 
 	
 	public static void main(String[] args) throws InterruptedException {
 		
+		Stack<Integer> turns = new Stack<Integer>();
+		
 		pilot.setLinearSpeed(SPEED);
 		Button.waitForAnyPress();
 		
 		calibrateColor(pilot);
 		Thread.sleep(1000000000);
-		/*
-		while(Button.getButtons() != Button.ID_ESCAPE){
-			//this is where we implement the methods that instigate the actions (also in the methods below)
-			
-		}
-		//SensorMode getRed = color_sensor.getRedMode();
+		
+		
 		
 		SensorMode getTouch = touch_sensor.getTouchMode();
 		
@@ -64,32 +66,81 @@ public class MazeDraft {
 		
 		pilot.forward();
 		
+		//double boundary = 5;
+		
 		while(Button.getButtons() != Button.ID_ESCAPE){ 
 			
-			if(checkIR(getIR)) {
-				
-				pilot.travel(10);
-				turnLeft(pilot);
-				pilot.travel(5);
-				pilot.forward();
-				System.out.println("IR");
-				
-			}
+			SensorMode getColor = color_sensor.getRed()
+			float [] samplevalue =  new float [getColor.sampleSize()];
 			
-			else if(checkIfTouching(getTouch)) {
-				backUp(pilot);
-				turnRight(pilot);
-				pilot.forward();
-				System.out.println("TOUCH");
-			}
-
-			else {
-				//PILOT.forward();
-				//System.out.println("ELSE");
-			}
+		    getColor.fetchSample(samplevalue, 0);
+		    System.out.println(samplevalue[0]);
+		    
+	    		if ((samplevalue[0] == woodHSV[0])){ //normal color of floor
+	    			
+	    			
+	    			left_motor.forward();
+	    			right_motor.forward();
+	    			left_motor.setSpeed((int)90);
+	    			right_motor.setSpeed((int)90);
+	    			
+	    			System.out.println(samplevalue[0]);
+	    			
+	    			if (checkIfTouching(getTouch)) {
+	    				lastIntersection = turns.pop();
+	    			}
+	    		}
+	    		
+	   		else if (samplevalue[0] == blackHSV[0]){ 
+	   	
+	   			left_motor.forward();
+	   			left_motor.setSpeed((int)200);
+	   			right_motor.backward();
+	   			System.out.println(samplevalue[0]);
+	   			
+	   			
+	   			
+	    		}
+	   		else if (samplevalue[0] == woodHSV[0]){
+	   			
+	   			right_motor.forward();
+	   			right_motor.setSpeed((int)200);
+	   			left_motor.backward();
+	   			System.out.println(samplevalue[0]);
+	   		}
+	    		
+	   		else if(samplevalue[0] == blueHSV[0]) {
+	   			if (checkIR(getIR)) {
+	   				turnLeft(pilot);
+	   				turns.push(directions[0]);
+	   			}
+	   			else {
+	   				pilot.travel(5);
+	   				turns.push(directions[1]);
+	   			}
+	   		}
+	    		
+	   		else if (checkIfTouching(getTouch)) {
+	   			lastIntersection = turns.pop();
+	   			pilot.travel(-2);
+	   			pilot.rotate(180);
+	   			
+	   		}
+	    		
+	   		else {
+	   			
+	   			left_motor.setSpeed((int)90);
+	   			right_motor.setSpeed((int)90);
+	   			
+	   			System.out.println(samplevalue[0]);
+	   			
+	   		}
 			
 		}
-		*/
+		
+		
+		
+	}
 		
 		
 	}
