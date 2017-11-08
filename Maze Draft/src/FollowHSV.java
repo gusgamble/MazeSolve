@@ -32,7 +32,7 @@ public class FollowHSV {
 	static double [] blueHSV= new double[3];
 	static final double TURN_ANGLE = 1;
 	static final double SPEED = 6;
-	static final double TOLERANCE = .04;
+	static final double TOLERANCE = 5;
 	
 public static void main(String[] args) throws InterruptedException {
 		
@@ -54,7 +54,7 @@ public static void main(String[] args) throws InterruptedException {
 				double[] samplevalue = RGBtoHSV(rgb);
 		    System.out.println(samplevalue[0]);
 		    
-	    		if ((samplevalue[0] == woodHSV[0])){ //normal color of floor
+	    		if ((samplevalue[0]-woodHSV[0])<TOLERANCE){ //normal color of floor
 	    			
 	    			
 	    			left_motor.forward();
@@ -65,7 +65,7 @@ public static void main(String[] args) throws InterruptedException {
 	    			System.out.println(samplevalue[0]);
 	    		}
 	    		
-	   		else if (samplevalue[0] == blackHSV[0]){ 
+	   		else if ((samplevalue[0]-blackHSV[0])<TOLERANCE){ 
 	   	
 	   			left_motor.forward();
 	   			left_motor.setSpeed((int)200);
