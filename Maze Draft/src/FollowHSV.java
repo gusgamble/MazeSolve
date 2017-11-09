@@ -74,6 +74,19 @@ public static void main(String[] args) throws InterruptedException {
 	    			
 	    			
 	    			System.out.println(samplevalue[0]);//print stub
+	    			
+	    			SensorMode toucher = touch_sensor.getTouchMode(); 
+	    			if (checkIfTouching(toucher)) { 		//if robot touches wall w/ touch sensor
+	    	   			System.out.println("OUCH !!!");
+	    	   			right_motor.stop();
+	    	   			left_motor.stop();
+	    	   			
+	    	   			pilot.travel(-2);
+	    	   			pilot.rotate(-160);	//turn around to avoid dead end
+	    	   			pilot.travel(6);		//move forward a little so that robot crosses to the correct (right) side of the line
+	    	   			left_motor.forward();
+	    	   			right_motor.forward();
+	    	   		}
 	    		}
 	    		
 	   		else if ((samplevalue[0]>=(89)) && (samplevalue[0] <= (91)) || (samplevalue[0]>=(119)) && (samplevalue[0] <= (121))){ //if the color sensor sees the black line (the tolerance is there so we can make better movements), turn right (left motor forward, right motor back)
