@@ -50,8 +50,8 @@ public static void main(String[] args) throws InterruptedException {
 		while(Button.getButtons() != Button.ID_ESCAPE){ 
 			
 			
-				rgb = color_sensor.getColor();
-				double[] samplevalue = RGBtoHSV(rgb);
+			rgb = color_sensor.getColor();
+			double[] samplevalue = RGBtoHSV(rgb);
 		    System.out.println(samplevalue[0]);
 		    
 	    		if ((samplevalue[0]-woodHSV[0])<=TOLERANCE || (samplevalue[0]-woodHSV[0])>TOLERANCE){ //normal color of floor
