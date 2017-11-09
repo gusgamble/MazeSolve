@@ -108,37 +108,42 @@ public class MazeDraft {
 	   			left_motor.backward();
 	   			System.out.println(samplevalue[0]);
 	   		}
+	    		//ABOVE THIS COMMENT, SEE COMMENTS IN FollowHSV FOR THE LOGIC THAT PERTAINS TO HSV IN LINE FOLLOWING
 	    		
-	   		else if(samplevalue[0] == blueHSV[0]) {
-	   			if(lastIntersection < 0||lastIntersection>2) {
-	   				if (lastIntersection==0) {
-	   					turns.push(1);
-	   					turnLeft(pilot);
+	   		else if(samplevalue[0] == blueHSV[0]) {//this is the code that should deal with when we hit an intersection
+	   			if(lastIntersection < 0||lastIntersection>2) {//if last intersection has an int value between 0-2 inclusive, then we MUST be coming back from a dead end here
+	   				if (lastIntersection==0) {//if we are at the intersection AND the last intersection we went left, then now we must go left. We ALSO need to push straight, which is what the robot will do on the way back
+	   					turns.push(1);//correct the stack to what we should have done here
+	   					lastIntersection =-1; // this resets lastIntersection to not be out of bounds, so we do not accidentally think we need to correct a mistake again
+	   					turnLeft(pilot);//make the turn
 	   				}
-	   				else if (lastIntersection == 1) {
-	   					turns.push(2);
-	   					turnLeft(pilot);
+	   				else if (lastIntersection == 1) {//same idea, if we went straight and we got a dead end, then we MUST go left to go the other way (this is because we could not have gone left, meaning that the only options were straight and right)
+	   					turns.push(2);//this is what we should have done here. This assumes that left was not an option and we made an incorrect decision to go straight. This corrects so the stack will have correct instructions later
+	   					lastIntersection =-1; // this resets lastIntersection to not be out of bounds, so we do not accidentally think we need to correct a mistake again
+	   					turnLeft(pilot);//make the correct turn
 	   				}
 
 	   			}
-	   			else if (checkIR(getIR)) {
-	   				turnLeft(pilot);
-	   				turns.push(directions[0]);
+	   			else if (checkIR(getIR)) {//if we are on the intersection and the IR tells us there is an available left turn
+	   				pilot.travel(5);//travel an arbitrary and untested small amount to get past the wall
+	   				turns.push(directions[0]);//push to the stack before making the turn
+	   				turnLeft(pilot);//take the left turn 
+	   				
 	   			}
-	   			else {
-	   				pilot.travel(5);
-	   				turns.push(directions[1]);
+	   			else {//this is the command to go straight. We will do this every time because it 
+	   				pilot.travel(5);//this is just to get past the blue
+	   				turns.push(directions[1]);//push our decision to go straight
 	   			}
 	   		}
 	    		
-	   		else if (checkIfTouching(getTouch)) {
-	   			lastIntersection = turns.pop();
-	   			pilot.travel(-2);
-	   			pilot.rotate(180);
-	   			
+	   		else if (checkIfTouching(getTouch)) {//this checks if we have hit a dead end
+	   			lastIntersection = turns.pop();//give the most recent decision, which must have been wrong, to the variable that can store it and use it to make a correction when back at the intersection
+	   			pilot.travel(-2);//back up 
+	   			pilot.rotate(180);//turn around
+	   			//HERE IS WHERE WE WILL MERGE THE LOGIC FROM MELODY'S CODE IN LINEFOLLOW
 	   		}
 	    		
-	   		else {
+	   		else {//this is just a safety net to catch every possible if
 	   			
 	   			left_motor.setSpeed((int)90);
 	   			right_motor.setSpeed((int)90);
@@ -159,16 +164,16 @@ public class MazeDraft {
 			rgb = color_sensor.getColor();
 			double[] samplevalue = RGBtoHSV(rgb);
 			
-			if (samplevalue[0]== blueHSV[0] ) {
-				lastIntersection = turns.pop();
+			if (samplevalue[0]== blueHSV[0] ) {//if we are at an intersection, the robot now only looks at the stack to determine how 
+				lastIntersection = turns.pop();//now we use lastIntersection as the "map" back
 				
-				if(lastIntersection == 0) {
+				if(lastIntersection == 0) {//if the map said we went left here, we need to go right on the way back
 					turnRight(pilot);//inverse of a correct left turn would be a right turn
 				}
-				else if(lastIntersection == 1) {
+				else if(lastIntersection == 1) {//if the map says that we went straight, we can just go straight still
 					pilot.travel(5);//this is go to straight and skip the blue square
 				}
-				else if (lastIntersection == 2) {
+				else if (lastIntersection == 2) {//if the map says that we went right, we need to go left instead
 					turnLeft(pilot);//the inverse of a correct right turn is a left turn
 				}
 			}
