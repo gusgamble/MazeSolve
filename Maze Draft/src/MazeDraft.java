@@ -110,7 +110,16 @@ public class MazeDraft {
 	   		}
 	    		
 	   		else if(samplevalue[0] == blueHSV[0]) {
-	   			if (checkIR(getIR)) {
+	   			if(lastIntersection < 0||lastIntersection>2) {
+	   				if (lastIntersection==0) {
+	   					turnLeft(pilot);
+	   				}
+	   				else if (lastIntersection == 1) {
+	   					turnLeft(pilot);
+	   				}
+
+	   			}
+	   			else if (checkIR(getIR)) {
 	   				turnLeft(pilot);
 	   				turns.push(directions[0]);
 	   			}
