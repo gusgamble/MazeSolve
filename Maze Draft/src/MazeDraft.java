@@ -148,7 +148,8 @@ public class MazeDraft {
 	   		}
 			
 		}
-		boolean end = false;
+		boolean end = false;//this will be declared at the beginning of the program and will only be set to true when the robot has reached the foil
+		//the foil behavior is pilot.stop(), play noise, end=true, and finally break
 		while(end) {
 			
 			
