@@ -29,7 +29,7 @@ public class FollowHSV {
 	static double[] lineHSV = new double[3];
 	static double[] blackHSV= new double[3];
 	static double[] woodHSV= new double[3];
-	static double [] blueHSV= {117,123};
+	static double [] blueHSV= new double[3];
 	static final double TURN_ANGLE = 1;
 	static final double SPEED = 6;
 	static final double TOLERANCE = 5;
@@ -56,13 +56,12 @@ public static void main(String[] args) throws InterruptedException {
 			double[] samplevalue = RGBtoHSV(rgb);
 		    System.out.println(samplevalue[0]);
 		    
-		    if ((samplevalue[0] >= (blueHSV[0])) && (samplevalue[0] <= (blueHSV[1])))//test for blue recognition
+		    if (samplevalue[0]>130)//test for blue recognition
 		    {
-		    		pilot.stop();
-		    		System.out.println("BLUE!!!!! " + samplevalue[0]);
-		    		Thread.sleep(200);
+		    		System.out.println("BLUE!!!!!");
+		    		pilot.travel(4);
 		    }
-		    if ((samplevalue[0] >= (lineHSV[0]-10)) && (samplevalue[0] <= (lineHSV[0]+10))){ //if on the color that is between the line and wood
+		    if ((samplevalue[0] >= (lineHSV[0]-5)) && (samplevalue[0] <= (lineHSV[0]+5))){ //if on the color that is between the line and wood
 	    		//it is important to note that the colors, UNLIKE getRedMode() are NOT numerically related to each other.
 		    	//We need to say that the robot is ON the wood or ON the line or ON the black to have the proper movements
 	    			
@@ -77,7 +76,7 @@ public static void main(String[] args) throws InterruptedException {
 	    			System.out.println(samplevalue[0]);//print stub
 	    		}
 	    		
-	   		else if ((samplevalue[0]>=(blackHSV[0]-5)) && (samplevalue[0] <= (blackHSV[0]+5))){ //if the color sensor sees the black line (the tolerance is there so we can make better movements), turn right (left motor forward, right motor back)
+	   		else if ((samplevalue[0]>=(89)) && (samplevalue[0] <= (91)) || (samplevalue[0]>=(119)) && (samplevalue[0] <= (121))){ //if the color sensor sees the black line (the tolerance is there so we can make better movements), turn right (left motor forward, right motor back)
 	   			//NOTE: the tolerance might need to be smaller or larger here. We followed a line through one intersection correctly,
 	   			//but got to a less defined one and the robot only went back and forth
 	   	
