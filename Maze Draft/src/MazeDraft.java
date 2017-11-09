@@ -72,8 +72,8 @@ public class MazeDraft {
 		while(Button.getButtons() != Button.ID_ESCAPE){ 
 			
 			
-				rgb = color_sensor.getColor();
-				double[] samplevalue = RGBtoHSV(rgb);
+			rgb = color_sensor.getColor();
+			double[] samplevalue = RGBtoHSV(rgb);
 		    System.out.println(samplevalue[0]);
 		    
 	    		if ((samplevalue[0] == woodHSV[0])){ //normal color of floor
@@ -112,9 +112,11 @@ public class MazeDraft {
 	   		else if(samplevalue[0] == blueHSV[0]) {
 	   			if(lastIntersection < 0||lastIntersection>2) {
 	   				if (lastIntersection==0) {
+	   					turns.push(1);
 	   					turnLeft(pilot);
 	   				}
 	   				else if (lastIntersection == 1) {
+	   					turns.push(2);
 	   					turnLeft(pilot);
 	   				}
 
@@ -146,7 +148,32 @@ public class MazeDraft {
 	   		}
 			
 		}
-		
+		boolean end = false;
+		while(end) {
+			
+			
+			
+			//line following code goes here. the if statements below belong in the if case of all(?) of the statements
+			
+			rgb = color_sensor.getColor();
+			double[] samplevalue = RGBtoHSV(rgb);
+			
+			if (samplevalue[0]== blueHSV[0] ) {
+				lastIntersection = turns.pop();
+				
+				if(lastIntersection == 0) {
+					turnRight(pilot);//inverse of a correct left turn would be a right turn
+				}
+				else if(lastIntersection == 1) {
+					pilot.travel(5);//this is go to straight and skip the blue square
+				}
+				else if (lastIntersection == 2) {
+					turnLeft(pilot);//the inverse of a correct right turn is a left turn
+				}
+			}
+			
+				
+		}
 		
 		
 	}
