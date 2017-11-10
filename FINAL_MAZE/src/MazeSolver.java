@@ -54,7 +54,7 @@ public class MazeSolver {
 		Button.waitForAnyPress();
 		
 		//we assign values to the "places" or colors on the maze. This does not get blue or foil
-		calibrateColor(pilot);
+		//calibrateColor(pilot);
 		
 		Color rgb;
 		
@@ -123,7 +123,7 @@ public class MazeSolver {
 		   			}
 
 		    }
-		    else if ((samplevalue[0] >= (lineHSV[0]-5)) && (samplevalue[0] <= (lineHSV[0]+5))){ //if on the color that is between the line and wood
+		    else if ((samplevalue[0] >= 39) && (samplevalue[0] <= 43)){ //if on the color that is between the line and wood
 	    		//it is important to note that the colors, UNLIKE getRedMode() are NOT numerically related to each other.
 		    	//We need to say that the robot is ON the wood or ON the line or ON the black to have the proper movements
 	    			
@@ -165,13 +165,13 @@ public class MazeSolver {
 	   			Thread.sleep(100);
 	    		}
 		    
-	   		else if ((samplevalue[0]>=(woodHSV[0]-5)) && (samplevalue[0] <= (woodHSV[0]+5))){ //if the color sensor sees the wood (with tolerance), we need to turn left (left motor backwards, right motor forwards) to get back on the line
+	   		else if ((samplevalue[0]>=29) && (samplevalue[0] <= 33)){ //if the color sensor sees the wood (with tolerance), we need to turn left (left motor backwards, right motor forwards) to get back on the line
 	   			
 	   			Thread.sleep(50);
 	   			right_motor.forward();//making sure the the right motor is still moving forward
 	   			right_motor.setSpeed((int)200);//speeding the right motor up to make the turn
 	   			left_motor.backward();//setting the left motor to move backwards so we can make right angle turns
-	   			//System.out.println(samplevalue[0]);//print stub
+	   			//System.out.println(samplevalue[0]); //print stub
 	   			System.out.println("WOOD");
 	   			Thread.sleep(100);
 
@@ -224,7 +224,7 @@ public class MazeSolver {
 	   				pilot.travel(7);
 				}
 			}
-			else if ((samplevalue[0] >= (lineHSV[0]-5)) && (samplevalue[0] <= (lineHSV[0]+5))){ //if on the color that is between the line and wood
+			else if ((samplevalue[0] >= 39) && (samplevalue[0] <= 43)){ //if on the color that is between the line and wood
 	    		//it is important to note that the colors, UNLIKE getRedMode() are NOT numerically related to each other.
 		    	//We need to say that the robot is ON the wood or ON the line or ON the black to have the proper movements
 	    			
@@ -260,7 +260,7 @@ public class MazeSolver {
 	   			Thread.sleep(100);
 	    		}
 		    
-	   		else if ((samplevalue[0]>=(woodHSV[0]-5)) && (samplevalue[0] <= (woodHSV[0]+5))){ //if the color sensor sees the wood (with tolerance), we need to turn left (left motor backwards, right motor forwards) to get back on the line
+	   		else if ((samplevalue[0]>=29) && (samplevalue[0] <= 32)){ //if the color sensor sees the wood (with tolerance), we need to turn left (left motor backwards, right motor forwards) to get back on the line
 	   			
 	   			Thread.sleep(50);
 	   			right_motor.forward();//making sure the the right motor is still moving forward
