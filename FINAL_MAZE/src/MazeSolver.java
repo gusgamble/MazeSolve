@@ -141,9 +141,12 @@ public class MazeSolver {
 	    			
 	    			SensorMode toucher = touch_sensor.getTouchMode(); 
 	    			if (checkIfTouching(toucher)) { 		//if robot touches wall w/ touch sensor
-	    	   			System.out.println("OUCH !!!");
+	    	   			
+	    				System.out.println("OUCH !!!");
 	    	   			right_motor.stop();
 	    	   			left_motor.stop();
+	    	   			lastIntersection = turns.pop();
+	    	   			
 	    	   			
 	    	   			pilot.travel(-2);
 	    	   			pilot.rotate(-160);	//turn around to avoid dead end
@@ -154,7 +157,7 @@ public class MazeSolver {
 	    			
 	    		}
 	    		
-	   		else if ((samplevalue[0]>=(89)) && (samplevalue[0] <= (120)) /*|| (samplevalue[0]>=(119)) && (samplevalue[0] <= (121))*/){ //if the color sensor sees the black line (the tolerance is there so we can make better movements), turn right (left motor forward, right motor back)
+	   		else if ((samplevalue[0]>=(89)) && (samplevalue[0] <= (120))){ //if the color sensor sees the black line (the tolerance is there so we can make better movements), turn right (left motor forward, right motor back)
 	   			//NOTE: the tolerance might need to be smaller or larger here. We followed a line through one intersection correctly,
 	   			//but got to a less defined one and the robot only went back and forth
 	   	
