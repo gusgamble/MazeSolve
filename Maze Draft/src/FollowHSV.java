@@ -92,7 +92,7 @@ public static void main(String[] args) throws InterruptedException {
 	    			
 	    			
 	    			//System.out.println(samplevalue[0]);//print stub
-	    			System.out.println("BOUNDRY");
+	    			System.out.println("BOUNDARY");
 	    			
 	    			SensorMode toucher = touch_sensor.getTouchMode(); 
 	    			if (checkIfTouching(toucher)) { 		//if robot touches wall w/ touch sensor
