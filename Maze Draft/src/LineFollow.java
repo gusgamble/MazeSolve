@@ -76,6 +76,7 @@ public class LineFollow {
 	    			
 	    			System.out.println(samplevalue[0]);
 	    			
+	    			
 	    			SensorMode toucher = touch_sensor.getTouchMode();
 	    			if (checkIfTouching(toucher)) {
 	    	   			System.out.println("OUCH !!!");
@@ -139,7 +140,7 @@ public class LineFollow {
 	   		}
 		}
 	}
-	
+
 	public static boolean checkIfTouching(SensorMode sensor){
 		float [] samplevalue =  new float [sensor.sampleSize()];
 		sensor.fetchSample(samplevalue,0);
