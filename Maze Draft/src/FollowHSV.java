@@ -128,6 +128,10 @@ public static void main(String[] args) throws InterruptedException {
 	   			System.out.println("WOOD");
 
 	   		}
+	   		else if ((samplevalue[0]>=75) && (samplevalue[0]<=87)){
+	   			
+	   			System.out.println("I REACHED THE FOIL");
+	   		}
 		    
 	   		else {//THIS ELSE STATEMENT IS A CATCH ALL. AS OF NOW, IT IS REACHABLE BUT THAT BEHAVIOR IS NOT WHAT WE NEED. THIS IS LEFT OVER FROM getRedMode() WHERE IT WAS UNREACHABLE, BUT IMPLEMENTED TO PREVENT POSSIBLE BAD BEHAVIOR
 	   			left_motor.setSpeed((int)150);
