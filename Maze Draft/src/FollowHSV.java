@@ -69,8 +69,8 @@ public static void main(String[] args) throws InterruptedException {
 		    		if (checkIR(getIR)) {//if we are on the intersection and the IR tells us there is an available left turn
 		   				//pilot.travel(5);//travel an arbitrary and untested small amount to get past the wall
 		   				//turns.push(directions[0]);//push to the stack before making the turn
-		   				pilot.rotate(-60);//take the left turn 
-		   				pilot.travel(5);
+		   				pilot.rotate(-50);//take the left turn 
+		   				pilot.travel(8);
 		   				
 		   			}
 		   			else {//this is the command to go straight. We will do this every time because it 
