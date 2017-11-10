@@ -40,7 +40,7 @@ public class MazeSolver {
 	static final double SPEED = 6;
 	static final double TOLERANCE = .04;
 	static final int[] directions = {0, 1, 2};
-	static int lastIntersection =4;
+	static int lastIntersection =-1;
 	
 	public static void main(String[] args) throws InterruptedException {
 		
@@ -55,6 +55,7 @@ public class MazeSolver {
 		
 		//we assign values to the "places" or colors on the maze. This does not get blue or foil
 		//calibrateColor(pilot);
+		color_sensor.setRGBMode();
 		
 		Color rgb;
 		
@@ -78,7 +79,7 @@ public class MazeSolver {
 		    		//pilot.travel(4);
 		    		
 		    		//if last intersection has an int value between 0-2 inclusive, then we MUST be coming back from a dead end here
-		   		if(lastIntersection < 0||lastIntersection>2) {
+		   		if(lastIntersection >= 0 && lastIntersection <= 2) {
 		   				
 		   				//if we are at the intersection AND the last intersection we went left, then now we must go left.
 		   				//We ALSO need to push straight, which is what the robot will do on the way back
