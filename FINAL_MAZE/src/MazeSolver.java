@@ -40,7 +40,7 @@ public class MazeSolver {
 	static final double SPEED = 6;
 	static final double TOLERANCE = .04;
 	static final int[] directions = {0, 1, 2};
-	static int lastIntersection =4;
+	static int lastIntersection =-1;
 	
 	public static void main(String[] args) throws InterruptedException {
 		
@@ -55,6 +55,7 @@ public class MazeSolver {
 		
 		//we assign values to the "places" or colors on the maze. This does not get blue or foil
 		//calibrateColor(pilot);
+		color_sensor.setRGBMode();
 		
 		Color rgb;
 		
@@ -63,7 +64,8 @@ public class MazeSolver {
 		//this is where we begin motion
 		pilot.forward();
 		
-		while(!end){ //infinite loop
+		//this loop goes until we reach the foil
+		while(!end){ 
 			
 			SensorMode getIR = ir_sensor.getDistanceMode();
 			
@@ -77,21 +79,22 @@ public class MazeSolver {
 		    		System.out.println("BLUE!!!!!");
 		    		//pilot.travel(4);
 		    		
-		    		//if last intersection has an int value between 0-2 inclusive, then we MUST be coming back from a dead end here
-		   		if(lastIntersection < 0||lastIntersection>2) {
+		    		//if last intersection has an int value between 0-2 inclusive, then we MUST be coming back from a dead end, and our turn decisions ONLY depend on that
+		   		if(lastIntersection >= 0 && lastIntersection <= 2) {
 		   				
 		   				//if we are at the intersection AND the last intersection we went left, then now we must go left.
 		   				//We ALSO need to push straight, which is what the robot will do on the way back
 		   			if (lastIntersection==0) {
-		   					//correct the stack to what we should have done here
+		   				//correct the stack to what we should have done here
 		   				turns.push(1);
-		   					// this resets lastIntersection to not be out of bounds, so we do not accidentally think we need to correct a mistake again
+		   				// this resets lastIntersection to not be out of bounds, so we do not accidentally think we need to correct a mistake again
 		   				lastIntersection =-1; 
-		   					//make the turn
+		   				//make the turn
 		   				pilot.rotate(-55);//take the left turn 
 		   				pilot.travel(7);
 		   			}
-		   		//same idea, if we went straight and we got a dead end, then we MUST go left to go the other way
+		   			
+		   			//same idea, if we went straight and we got a dead end, then we MUST go left to go the other way
 	   				//(this is because we could not have gone left, meaning that the only options were straight and right)
 	   				else if (lastIntersection == 1) {
 	   					
@@ -105,21 +108,27 @@ public class MazeSolver {
 		   				pilot.travel(7);
 	   				}
 		   		}
-		    		
-		    		if (checkIR(getIR)) {//if we are on the intersection and the IR tells us there is an available left turn
-		   				//pilot.travel(5);//travel an arbitrary and untested small amount to get past the wall
-		   				turns.push(directions[0]);//push to the stack before making the turn
-		   				pilot.rotate(-55);//take the left turn 
+		   		//if we are on the intersection and the IR tells us there is an available left turn
+		    		if (checkIR(getIR)) {
+		    				//push to the stack before making the turn
+		   				turns.push(directions[0]);
+		   				//take the left turn
+		   				pilot.rotate(-55); 
 		   				pilot.travel(7);
 		   				
 		   			}
-		   			else {//this is the command to go straight. We will do this every time because it 
+		    			//this is the command to go straight. We will do this every time because it 
+		   			else {
 		   				left_motor.forward();
 		   				right_motor.forward();
 		   				left_motor.setSpeed((int)100);
 		   				right_motor.setSpeed((int)100);
-		   				pilot.travel(6);//this is just to get past the blue
-		   				turns.push(directions[1]);//push our decision to go straight
+		   				//push our decision to go straight
+		   				turns.push(directions[1]);
+		   				
+		   				//this is just to get past the blue
+		   				pilot.travel(6);
+		   				
 		   			}
 
 		    }
@@ -139,27 +148,36 @@ public class MazeSolver {
 	    			System.out.println("BOUNDARY");
 	    			
 	    			SensorMode toucher = touch_sensor.getTouchMode(); 
-	    			if (checkIfTouching(toucher)) { 		//if robot touches wall w/ touch sensor
-	    	   			System.out.println("OUCH !!!");
+	    			//if robot touches wall w/ touch sensor
+	    			if (checkIfTouching(toucher)) { 		
+	    	   			
+	    				System.out.println("OUCH !!!");
 	    	   			right_motor.stop();
 	    	   			left_motor.stop();
+	    	   			lastIntersection = turns.pop();
+	    	   			
 	    	   			
 	    	   			pilot.travel(-2);
-	    	   			pilot.rotate(-160);	//turn around to avoid dead end
-	    	   			pilot.travel(6);		//move forward a little so that robot crosses to the correct (right) side of the line
+	    	   			//turn around to avoid dead end
+	    	   			pilot.rotate(-160);
+	    	   			//move forward a little so that robot crosses to the correct (right) side of the line
+	    	   			pilot.travel(6);		
 	    	   			left_motor.forward();
 	    	   			right_motor.forward();
 	    	   		}
 	    			
 	    		}
 	    		
-	   		else if ((samplevalue[0]>=(89)) && (samplevalue[0] <= (120)) /*|| (samplevalue[0]>=(119)) && (samplevalue[0] <= (121))*/){ //if the color sensor sees the black line (the tolerance is there so we can make better movements), turn right (left motor forward, right motor back)
-	   			//NOTE: the tolerance might need to be smaller or larger here. We followed a line through one intersection correctly,
-	   			//but got to a less defined one and the robot only went back and forth
-	   	
-	   			left_motor.forward();//this is to make sure that the left motor is going forward, just in case
-	   			left_motor.setSpeed((int)200);//this speed is subject to change. The casting of (int) is to make sure the we are using the correct setSpeed. there is a setSpeed that uses float, but we are using int for consistency 
-	   			right_motor.backward();;//this is to set the right motor to move backwards, to make right angles possible
+		    
+		    //if the color sensor sees the black line (the tolerance is there so we can make better movements), turn right (left motor forward, right motor back)
+	   		else if ((samplevalue[0]>=(89)) && (samplevalue[0] <= (120))){ 
+	   			
+	   			//this is to make sure that the left motor is going forward, just in case
+	   			left_motor.forward();
+	   			//this speed is subject to change. The casting of (int) is to make sure the we are using the correct setSpeed. there is a setSpeed that uses float, but we are using int for consistency 
+	   			left_motor.setSpeed((int)200);
+	   			//this is to set the right motor to move backwards, to make right angles possible
+	   			right_motor.backward();
 	   			//System.out.println(samplevalue[0]);//print stub	
 	   			System.out.println("BLACK");
 	   			Thread.sleep(100);
@@ -168,9 +186,12 @@ public class MazeSolver {
 	   		else if ((samplevalue[0]>=29) && (samplevalue[0] <= 33)){ //if the color sensor sees the wood (with tolerance), we need to turn left (left motor backwards, right motor forwards) to get back on the line
 	   			
 	   			Thread.sleep(50);
-	   			right_motor.forward();//making sure the the right motor is still moving forward
-	   			right_motor.setSpeed((int)200);//speeding the right motor up to make the turn
-	   			left_motor.backward();//setting the left motor to move backwards so we can make right angle turns
+	   			//making sure the the right motor is still moving forward
+	   			right_motor.forward();
+	   			//speeding the right motor up to make the turn
+	   			right_motor.setSpeed((int)200);
+	   			//setting the left motor to move backwards so we can make right angle turns
+	   			left_motor.backward();
 	   			//System.out.println(samplevalue[0]); //print stub
 	   			System.out.println("WOOD");
 	   			Thread.sleep(100);
@@ -209,7 +230,8 @@ public class MazeSolver {
 				//if the map said we went left here, we need to go right on the way back
 				if(lastIntersection == 0) {
 					//inverse of a correct left turn would be a right turn
-					pilot.rotate(100);//take the right turn 
+					//take the right turn 
+					pilot.rotate(100);
 		   			pilot.travel(3);
 				}
 				//if the map says that we went straight, we can just go straight still
@@ -220,7 +242,8 @@ public class MazeSolver {
 				//if the map says that we went right, we need to go left instead
 				else if (lastIntersection == 2) {
 					//the inverse of a correct right turn is a left turn
-					pilot.rotate(-55);//take the left turn 
+					//take the left turn 
+					pilot.rotate(-55);
 	   				pilot.travel(7);
 				}
 			}
@@ -248,31 +271,38 @@ public class MazeSolver {
 	    			
 	    		}
 	    		
-	   		else if ((samplevalue[0]>=(89)) && (samplevalue[0] <= (120)) /*|| (samplevalue[0]>=(119)) && (samplevalue[0] <= (121))*/){ //if the color sensor sees the black line (the tolerance is there so we can make better movements), turn right (left motor forward, right motor back)
-	   			//NOTE: the tolerance might need to be smaller or larger here. We followed a line through one intersection correctly,
-	   			//but got to a less defined one and the robot only went back and forth
-	   	
-	   			left_motor.forward();//this is to make sure that the left motor is going forward, just in case
-	   			left_motor.setSpeed((int)200);//this speed is subject to change. The casting of (int) is to make sure the we are using the correct setSpeed. there is a setSpeed that uses float, but we are using int for consistency 
-	   			right_motor.backward();//this is to set the right motor to move backwards, to make right angles possible
+			//if the color sensor sees the black line (the tolerance is there so we can make better movements), turn right (left motor forward, right motor back)
+	   		else if ((samplevalue[0]>=(89)) && (samplevalue[0] <= (120)) ){ 
+	   			
+	   			
+	   			//this is to make sure that the left motor is going forward, just in case
+	   			left_motor.forward();
+	   			//this speed is subject to change. The casting of (int) is to make sure the we are using the correct setSpeed. there is a setSpeed that uses float, but we are using int for consistency
+	   			left_motor.setSpeed((int)200); 
+	   			//this is to set the right motor to move backwards, to make right angles possible
+	   			right_motor.backward();
 	   			//System.out.println(samplevalue[0]);//print stub	
 	   			System.out.println("BLACK");
 	   			Thread.sleep(100);
 	    		}
 		    
-	   		else if ((samplevalue[0]>=29) && (samplevalue[0] <= 32)){ //if the color sensor sees the wood (with tolerance), we need to turn left (left motor backwards, right motor forwards) to get back on the line
+			//if the color sensor sees the wood (with tolerance), we need to turn left (left motor backwards, right motor forwards) to get back on the line
+	   		else if ((samplevalue[0]>=29) && (samplevalue[0] <= 32)){ 
 	   			
 	   			Thread.sleep(50);
-	   			right_motor.forward();//making sure the the right motor is still moving forward
-	   			right_motor.setSpeed((int)200);//speeding the right motor up to make the turn
-	   			left_motor.backward();//setting the left motor to move backwards so we can make right angle turns
+	   			//making sure the the right motor is still moving forward
+	   			right_motor.forward();
+	   			//speeding the right motor up to make the turn
+	   			right_motor.setSpeed((int)200);
+	   			//setting the left motor to move backwards so we can make right angle turns
+	   			left_motor.backward();
 	   			//System.out.println(samplevalue[0]);//print stub
 	   			System.out.println("WOOD");
 	   			Thread.sleep(100);
 
 	   		}
 		    
-	   		else {//THIS ELSE STATEMENT IS A CATCH ALL. AS OF NOW, IT IS REACHABLE BUT THAT BEHAVIOR IS NOT WHAT WE NEED. THIS IS LEFT OVER FROM getRedMode() WHERE IT WAS UNREACHABLE, BUT IMPLEMENTED TO PREVENT POSSIBLE BAD BEHAVIOR
+	   		else {
 	   			left_motor.setSpeed((int)100);
 	   			right_motor.setSpeed((int)100);
 	   			System.out.println(samplevalue[0]);
@@ -285,7 +315,7 @@ public class MazeSolver {
 	public static boolean checkIR(SensorMode sensor){
 		float [] samplevalue =  new float [sensor.sampleSize()];
 		sensor.fetchSample(samplevalue,0);
-		return (samplevalue[0]>=DISTANCE_FROM_WALL);//
+		return (samplevalue[0]>=DISTANCE_FROM_WALL);
 	}
 	
 	public static boolean checkIfTouching(SensorMode sensor){
