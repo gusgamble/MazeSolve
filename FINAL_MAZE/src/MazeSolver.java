@@ -39,10 +39,11 @@ public class MazeSolver {
 	static final double DISTANCE_FROM_WALL = 21; //this number needs to be measured/changed
 	static final double SPEED = 6;
 	static final double TOLERANCE = .04;
-	static int[] directions = {0, 1, 2};
+	static final int[] directions = {0, 1, 2};
 	static int lastIntersection =4;
 	
 	public static void main(String[] args) throws InterruptedException {
+		
 		boolean end = false;
 		
 		Stack<Integer> turns = new Stack<Integer>();
@@ -87,8 +88,22 @@ public class MazeSolver {
 		   					// this resets lastIntersection to not be out of bounds, so we do not accidentally think we need to correct a mistake again
 		   				lastIntersection =-1; 
 		   					//make the turn
-		   				turnLeft(pilot);
+		   				pilot.rotate(-55);//take the left turn 
+		   				pilot.travel(7);
 		   			}
+		   		//same idea, if we went straight and we got a dead end, then we MUST go left to go the other way
+	   				//(this is because we could not have gone left, meaning that the only options were straight and right)
+	   				else if (lastIntersection == 1) {
+	   					
+	   					//this is what we should have done here. This assumes that left was not an option and we made an incorrect decision to go straight.
+	   					//This corrects so the stack will have correct instructions later
+	   					turns.push(2);
+	   					// this resets lastIntersection to not be out of bounds, so we do not accidentally think we need to correct a mistake again
+	   					lastIntersection =-1;
+	   					//make the correct turn
+	   					pilot.rotate(-55);//take the left turn 
+		   				pilot.travel(7);
+	   				}
 		   		}
 		    		
 		    		if (checkIR(getIR)) {//if we are on the intersection and the IR tells us there is an available left turn
@@ -99,9 +114,11 @@ public class MazeSolver {
 		   				
 		   			}
 		   			else {//this is the command to go straight. We will do this every time because it 
-		   				left_motor.setSpeed((int)200);
-		   				right_motor.setSpeed((int)200);
-		   				pilot.travel(5);//this is just to get past the blue
+		   				left_motor.forward();
+		   				right_motor.forward();
+		   				left_motor.setSpeed((int)100);
+		   				right_motor.setSpeed((int)100);
+		   				pilot.travel(6);//this is just to get past the blue
 		   				turns.push(directions[1]);//push our decision to go straight
 		   			}
 
@@ -159,28 +176,32 @@ public class MazeSolver {
 	   			Thread.sleep(100);
 
 	   		}
-	   		else if ((samplevalue[0]>=80) && (samplevalue[0]<=87)){
+	   		else if ((samplevalue[0]>=85) && (samplevalue[0]<=87)){
 	   			
 	   			System.out.println("I REACHED THE FOIL");
+	   			System.out.println(samplevalue[0]);
+	   			pilot.stop();
+	   			pilot.rotate(-170);
+	   			pilot.travel((int)6);
 	   			end = true;
+	   			Thread.sleep(1000);
 	   			
 	   		}
 		    
-	   		else {//THIS ELSE STATEMENT IS A CATCH ALL. AS OF NOW, IT IS REACHABLE BUT THAT BEHAVIOR IS NOT WHAT WE NEED. THIS IS LEFT OVER FROM getRedMode() WHERE IT WAS UNREACHABLE, BUT IMPLEMENTED TO PREVENT POSSIBLE BAD BEHAVIOR
+	   		else {
 	   			left_motor.setSpeed((int)100);
 	   			right_motor.setSpeed((int)100);
 	   			System.out.println(samplevalue[0]);
 	   		}
 		}
+		
 		while(end) {
-			
-			//line following code goes here. the if statements below belong in the if case of all(?) of the statements
 			
 			rgb = color_sensor.getColor();
 			double[] samplevalue = RGBtoHSV(rgb);
 			
-			//if we are at an intersection, the robot now only looks at the stack to determine how
-			if (samplevalue[0]== blueHSV[0] ) { 
+			//if we are at an intersection, the robot now only looks at the stack to determine which direction to turn
+			if (samplevalue[0]>=190 && samplevalue[0]<=220) { 
 				
 				//now we use lastIntersection as the "map" back
 				lastIntersection = turns.pop();
@@ -188,7 +209,8 @@ public class MazeSolver {
 				//if the map said we went left here, we need to go right on the way back
 				if(lastIntersection == 0) {
 					//inverse of a correct left turn would be a right turn
-					turnRight(pilot);
+					pilot.rotate(100);//take the right turn 
+		   			pilot.travel(3);
 				}
 				//if the map says that we went straight, we can just go straight still
 				else if(lastIntersection == 1) {
@@ -198,7 +220,8 @@ public class MazeSolver {
 				//if the map says that we went right, we need to go left instead
 				else if (lastIntersection == 2) {
 					//the inverse of a correct right turn is a left turn
-					turnLeft(pilot);
+					pilot.rotate(-55);//take the left turn 
+	   				pilot.travel(7);
 				}
 			}
 			else if ((samplevalue[0] >= (lineHSV[0]-5)) && (samplevalue[0] <= (lineHSV[0]+5))){ //if on the color that is between the line and wood
@@ -211,22 +234,16 @@ public class MazeSolver {
 		    		right_motor.setSpeed((int)100);
 	    			left_motor.forward();
 	    			right_motor.forward();
-	    			
+	    			Thread.sleep(100);
 	    			
 	    			//System.out.println(samplevalue[0]);//print stub
 	    			System.out.println("BOUNDARY");
 	    			
 	    			SensorMode toucher = touch_sensor.getTouchMode(); 
 	    			if (checkIfTouching(toucher)) { 		//if robot touches wall w/ touch sensor
-	    	   			System.out.println("OUCH !!!");
-	    	   			right_motor.stop();
-	    	   			left_motor.stop();
-	    	   			
-	    	   			pilot.travel(-2);
-	    	   			pilot.rotate(-160);	//turn around to avoid dead end
-	    	   			pilot.travel(6);		//move forward a little so that robot crosses to the correct (right) side of the line
-	    	   			left_motor.forward();
-	    	   			right_motor.forward();
+	    	   			System.out.println("THE MAZE HAS BEN SOLVEDTH!!!!!!!!!");
+	    	   			pilot.stop();
+	    	   			Thread.sleep(10000);
 	    	   		}
 	    			
 	    		}
@@ -237,7 +254,7 @@ public class MazeSolver {
 	   	
 	   			left_motor.forward();//this is to make sure that the left motor is going forward, just in case
 	   			left_motor.setSpeed((int)200);//this speed is subject to change. The casting of (int) is to make sure the we are using the correct setSpeed. there is a setSpeed that uses float, but we are using int for consistency 
-	   			right_motor.backward();;//this is to set the right motor to move backwards, to make right angles possible
+	   			right_motor.backward();//this is to set the right motor to move backwards, to make right angles possible
 	   			//System.out.println(samplevalue[0]);//print stub	
 	   			System.out.println("BLACK");
 	   			Thread.sleep(100);
@@ -254,12 +271,6 @@ public class MazeSolver {
 	   			Thread.sleep(100);
 
 	   		}
-	   		else if ((samplevalue[0]>=75) && (samplevalue[0]<=87)){
-	   			
-	   			System.out.println("I REACHED THE FOIL");
-	   			end = true;
-	   			break;
-	   		}
 		    
 	   		else {//THIS ELSE STATEMENT IS A CATCH ALL. AS OF NOW, IT IS REACHABLE BUT THAT BEHAVIOR IS NOT WHAT WE NEED. THIS IS LEFT OVER FROM getRedMode() WHERE IT WAS UNREACHABLE, BUT IMPLEMENTED TO PREVENT POSSIBLE BAD BEHAVIOR
 	   			left_motor.setSpeed((int)100);
@@ -267,6 +278,7 @@ public class MazeSolver {
 	   			System.out.println(samplevalue[0]);
 	   		}
 		}
+	
 	}		
 	
 
@@ -280,22 +292,6 @@ public class MazeSolver {
 		float [] samplevalue =  new float [sensor.sampleSize()];
 		sensor.fetchSample(samplevalue,0);
 		return (samplevalue[0]==1);
-	}
-
-	public static void turnRight(MovePilot pilot){
-		pilot.stop();
-	    	pilot.rotate(90);
-	    	pilot.forward();
-	}
-	
-	public static void turnLeft(MovePilot pilot){
-		pilot.stop();
-	    	pilot.rotate(-90);
-	    	pilot.forward();
-	}
-	
-	public static void backUp(MovePilot pilot){
-		pilot.travel(-2);
 	}
 
 	public static void calibrateColor(MovePilot pilot) throws InterruptedException
