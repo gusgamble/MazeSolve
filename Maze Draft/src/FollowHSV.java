@@ -33,6 +33,7 @@ public class FollowHSV {
 	static final double TURN_ANGLE = 1;
 	static final double SPEED = 6;
 	static final double TOLERANCE = 5;
+	static final double DISTANCE_FROM_WALL = 21;
 	
 public static void main(String[] args) throws InterruptedException {
 		
@@ -46,20 +47,37 @@ public static void main(String[] args) throws InterruptedException {
 		
 		Color rgb;
 		
+		
+		
 		//this is where we begin motion
 		pilot.forward();
 		
 		while(Button.getButtons() != Button.ID_ESCAPE){ //infinite loop
+			
+			SensorMode getIR = ir_sensor.getDistanceMode();
 			
 			//setting the color sensor up to get a new value every time this loops 
 			rgb = color_sensor.getColor();
 			double[] samplevalue = RGBtoHSV(rgb);
 		    System.out.println(samplevalue[0]);
 		    
-		    if (samplevalue[0]>130)//test for blue recognition
+		    if (samplevalue[0]>=190 && samplevalue[0]<=220)//test for blue recognition
 		    {
 		    		System.out.println("BLUE!!!!!");
-		    		pilot.travel(4);
+		    		//pilot.travel(4);
+		    		
+		    		if (checkIR(getIR)) {//if we are on the intersection and the IR tells us there is an available left turn
+		   				//pilot.travel(5);//travel an arbitrary and untested small amount to get past the wall
+		   				//turns.push(directions[0]);//push to the stack before making the turn
+		   				pilot.rotate(-60);//take the left turn 
+		   				pilot.travel(5);
+		   				
+		   			}
+		   			else {//this is the command to go straight. We will do this every time because it 
+		   				pilot.travel(1);//this is just to get past the blue
+		   				//turns.push(directions[1]);//push our decision to go straight
+		   			}
+
 		    }
 		    if ((samplevalue[0] >= (lineHSV[0]-5)) && (samplevalue[0] <= (lineHSV[0]+5))){ //if on the color that is between the line and wood
 	    		//it is important to note that the colors, UNLIKE getRedMode() are NOT numerically related to each other.
@@ -73,7 +91,8 @@ public static void main(String[] args) throws InterruptedException {
 	    			right_motor.forward();
 	    			
 	    			
-	    			System.out.println(samplevalue[0]);//print stub
+	    			//System.out.println(samplevalue[0]);//print stub
+	    			System.out.println("BOUNDRY");
 	    			
 	    			SensorMode toucher = touch_sensor.getTouchMode(); 
 	    			if (checkIfTouching(toucher)) { 		//if robot touches wall w/ touch sensor
@@ -89,14 +108,15 @@ public static void main(String[] args) throws InterruptedException {
 	    	   		}
 	    		}
 	    		
-	   		else if ((samplevalue[0]>=(89)) && (samplevalue[0] <= (91)) || (samplevalue[0]>=(119)) && (samplevalue[0] <= (121))){ //if the color sensor sees the black line (the tolerance is there so we can make better movements), turn right (left motor forward, right motor back)
+	   		else if ((samplevalue[0]>=(89)) && (samplevalue[0] <= (120)) /*|| (samplevalue[0]>=(119)) && (samplevalue[0] <= (121))*/){ //if the color sensor sees the black line (the tolerance is there so we can make better movements), turn right (left motor forward, right motor back)
 	   			//NOTE: the tolerance might need to be smaller or larger here. We followed a line through one intersection correctly,
 	   			//but got to a less defined one and the robot only went back and forth
 	   	
 	   			left_motor.forward();//this is to make sure that the left motor is going forward, just in case
 	   			left_motor.setSpeed((int)300);//this speed is subject to change. The casting of (int) is to make sure the we are using the correct setSpeed. there is a setSpeed that uses float, but we are using int for consistency 
 	   			right_motor.backward();;//this is to set the right motor to move backwards, to make right angles possible
-	   			System.out.println(samplevalue[0]);//print stub	
+	   			//System.out.println(samplevalue[0]);//print stub	
+	   			System.out.println("BLACK");
 	    		}
 		    
 	   		else if ((samplevalue[0]>=(woodHSV[0]-5)) && (samplevalue[0] <= (woodHSV[0]+5))){ //if the color sensor sees the wood (with tolerance), we need to turn left (left motor backwards, right motor forwards) to get back on the line
@@ -104,7 +124,8 @@ public static void main(String[] args) throws InterruptedException {
 	   			right_motor.forward();//making sure the the right motor is still moving forward
 	   			right_motor.setSpeed((int)300);//speeding the right motor up to make the turn
 	   			left_motor.backward();//setting the left motor to move backwards so we can make right angle turns
-	   			System.out.println(samplevalue[0]);//print stub
+	   			//System.out.println(samplevalue[0]);//print stub
+	   			System.out.println("WOOD");
 
 	   		}
 		    
@@ -201,6 +222,12 @@ public static boolean checkIfTouching(SensorMode sensor){
 	float [] samplevalue =  new float [sensor.sampleSize()];
 	sensor.fetchSample(samplevalue,0);
 	return (samplevalue[0]==1);
+}
+
+public static boolean checkIR(SensorMode sensor){
+	float [] samplevalue =  new float [sensor.sampleSize()];
+	sensor.fetchSample(samplevalue,0);
+	return (samplevalue[0]>=DISTANCE_FROM_WALL);//
 }
 
 }
