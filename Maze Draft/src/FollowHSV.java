@@ -66,6 +66,9 @@ public static void main(String[] args) throws InterruptedException {
 		    		System.out.println("BLUE!!!!!");
 		    		//pilot.travel(4);
 		    		
+		    		pilot.rotate(100);//take the right turn 
+	   			pilot.travel(3);
+		    		/*
 		    		if (checkIR(getIR)) {//if we are on the intersection and the IR tells us there is an available left turn
 		   				//pilot.travel(5);//travel an arbitrary and untested small amount to get past the wall
 		   				//turns.push(directions[0]);//push to the stack before making the turn
@@ -78,7 +81,7 @@ public static void main(String[] args) throws InterruptedException {
 		   				right_motor.setSpeed((int)200);
 		   				pilot.travel(5);//this is just to get past the blue
 		   				//turns.push(directions[1]);//push our decision to go straight
-		   			}
+		   			}*/
 
 		    }
 		    if ((samplevalue[0] >= (lineHSV[0]-5)) && (samplevalue[0] <= (lineHSV[0]+5))){ //if on the color that is between the line and wood
