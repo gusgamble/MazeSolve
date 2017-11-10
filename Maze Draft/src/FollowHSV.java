@@ -74,7 +74,9 @@ public static void main(String[] args) throws InterruptedException {
 		   				
 		   			}
 		   			else {//this is the command to go straight. We will do this every time because it 
-		   				pilot.travel(1);//this is just to get past the blue
+		   				left_motor.setSpeed((int)200);
+		   				right_motor.setSpeed((int)200);
+		   				pilot.travel(5);//this is just to get past the blue
 		   				//turns.push(directions[1]);//push our decision to go straight
 		   			}
 
@@ -85,8 +87,8 @@ public static void main(String[] args) throws InterruptedException {
 	    			
 		    		//both motors, since we are on the line, are moving forward. This looks like the robot going in a straight line
 		    		
-		    		left_motor.setSpeed((int)150);
-		    		right_motor.setSpeed((int)150);
+		    		left_motor.setSpeed((int)100);
+		    		right_motor.setSpeed((int)100);
 	    			left_motor.forward();
 	    			right_motor.forward();
 	    			
@@ -106,6 +108,7 @@ public static void main(String[] args) throws InterruptedException {
 	    	   			left_motor.forward();
 	    	   			right_motor.forward();
 	    	   		}
+	    			
 	    		}
 	    		
 	   		else if ((samplevalue[0]>=(89)) && (samplevalue[0] <= (120)) /*|| (samplevalue[0]>=(119)) && (samplevalue[0] <= (121))*/){ //if the color sensor sees the black line (the tolerance is there so we can make better movements), turn right (left motor forward, right motor back)
@@ -113,19 +116,22 @@ public static void main(String[] args) throws InterruptedException {
 	   			//but got to a less defined one and the robot only went back and forth
 	   	
 	   			left_motor.forward();//this is to make sure that the left motor is going forward, just in case
-	   			left_motor.setSpeed((int)300);//this speed is subject to change. The casting of (int) is to make sure the we are using the correct setSpeed. there is a setSpeed that uses float, but we are using int for consistency 
+	   			left_motor.setSpeed((int)200);//this speed is subject to change. The casting of (int) is to make sure the we are using the correct setSpeed. there is a setSpeed that uses float, but we are using int for consistency 
 	   			right_motor.backward();;//this is to set the right motor to move backwards, to make right angles possible
 	   			//System.out.println(samplevalue[0]);//print stub	
 	   			System.out.println("BLACK");
+	   			Thread.sleep(100);
 	    		}
 		    
 	   		else if ((samplevalue[0]>=(woodHSV[0]-5)) && (samplevalue[0] <= (woodHSV[0]+5))){ //if the color sensor sees the wood (with tolerance), we need to turn left (left motor backwards, right motor forwards) to get back on the line
 	   			
+	   			Thread.sleep(50);
 	   			right_motor.forward();//making sure the the right motor is still moving forward
-	   			right_motor.setSpeed((int)300);//speeding the right motor up to make the turn
+	   			right_motor.setSpeed((int)200);//speeding the right motor up to make the turn
 	   			left_motor.backward();//setting the left motor to move backwards so we can make right angle turns
 	   			//System.out.println(samplevalue[0]);//print stub
 	   			System.out.println("WOOD");
+	   			Thread.sleep(100);
 
 	   		}
 	   		else if ((samplevalue[0]>=75) && (samplevalue[0]<=87)){
@@ -134,8 +140,8 @@ public static void main(String[] args) throws InterruptedException {
 	   		}
 		    
 	   		else {//THIS ELSE STATEMENT IS A CATCH ALL. AS OF NOW, IT IS REACHABLE BUT THAT BEHAVIOR IS NOT WHAT WE NEED. THIS IS LEFT OVER FROM getRedMode() WHERE IT WAS UNREACHABLE, BUT IMPLEMENTED TO PREVENT POSSIBLE BAD BEHAVIOR
-	   			left_motor.setSpeed((int)150);
-	   			right_motor.setSpeed((int)150);
+	   			left_motor.setSpeed((int)100);
+	   			right_motor.setSpeed((int)100);
 	   			System.out.println(samplevalue[0]);
 	   		}
 		}	
