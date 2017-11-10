@@ -128,7 +128,7 @@ public static void main(String[] args) throws InterruptedException {
 	   			System.out.println("WOOD");
 
 	   		}
-	   		else if ((samplevalue[0]>=75) && (samplevalue[0]<=87){
+	   		else if ((samplevalue[0]>=75) && (samplevalue[0]<=87)){
 	   			
 	   			System.out.println("I REACHED THE FOIL");
 	   		}
