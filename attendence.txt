@@ -1,1 +1,0 @@
-All aside from Matt were here. We reassigned melody to figure out the best use for the stack. Binrong worked on strategy for the robot to get off the line. I worked on switching the line following to getRedMode() and sam was working on use for a switch
